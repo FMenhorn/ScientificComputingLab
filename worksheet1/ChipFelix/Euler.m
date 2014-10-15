@@ -1,7 +1,9 @@
 function [ y ] = Euler( f,y0,dt,t_end )
-%UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
-len = t_end/dt %number of steps in range
+%EULER this function returns an euler approximation of a function
+%   this approximation of a function is based on the function f
+%   starting value y0 timesteps dt and the end time t_end
+
+len = t_end/dt; %number of steps in range
 
 y = [y0,zeros(1,len)];  %memory allocation for result vector
 
