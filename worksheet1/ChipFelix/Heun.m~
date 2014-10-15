@@ -7,13 +7,10 @@ len = t_end/dt; %the number of steps is calculated
 
 y = [y0,zeros(1,len)]; % the result memory is allocated
 for n = 1:len
-     % a temporary value is calculated for the current Euler value
-     % this value is based on previous Heun y result values
-     % range for the calculation is limited to two steps for 
-     % perfomance purposes
+     % a temporary value is calculated for 
     temp = Euler(f,y(n),dt,2*dt); 
    
-    %Average of both test point slopes
+    
     y(n+1) = y(n) + dt * 0.5 * (f(y(n)) + f(temp(2)));
 end
 
