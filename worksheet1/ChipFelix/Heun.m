@@ -13,7 +13,7 @@ for n = 1:len
      % perfomance purposes
     temp = Euler(f,y(n),dt,dt); 
    
-    %Average of both test point slopes
+    %Average of both test point y values based on slopes
     y(n+1) = y(n) + dt * 0.5 * (f(y(n)) + f(temp(2)));
 end
 
