@@ -9,7 +9,7 @@ y_res = nan(size(time_steps));
 y_res(1) = y_0;
 
 for i = 1:(length(time_steps)-1)
-    y_res(i+1) = y_res(i) + expl_euler_step(y_res(i),delta_t,diff_func);
+    y_res(i+1) = y_res(i) + expl_euler_step(delta_t,diff_func(y_res(i)));
 end
 
 end

@@ -19,15 +19,24 @@ y_res(1) = y_0;
 for i = 1:length(time_steps)-1
     
     y_1 = diff_func(y_res(i));
-    y_2 = diff_func(y_res(i)+expl_euler_step(y_res(i),delta_t/2,diff_func));
-    y_3 = diff_func(y_res(i)+expl_euler_step(y_2,delta_t/2,diff_func));
-    y_4 = diff_func(y_res(i)+expl_euler_step(y_3,delta_t,diff_func));
+    p_2 = y_res(i) + expl_euler_step(delta_t/2,y_1);
+    y_2 = diff_func(p_2);
+    p_3 = y_res(i) + expl_euler_step(delta_t/2,y_2);
+    y_3 = diff_func(p_3);
+    p_4 = y_res(i) + expl_euler_step(delta_t,y_3);
+    y_4 = diff_func(p_4);
+    %y_2 = diff_func(y_res(i)+expl_euler_step(y_res(i)+delta_t/2 * y_1,delta_t/2,diff_func));
+    %y_3 = diff_func(y_res(i)+expl_euler_step(y_res(i)+delta_t/2 * y_2,delta_t/2,diff_func));
+    %y_4 = diff_func(y_res(i)+expl_euler_step(y_res(i)+delta_t * y_3,delta_t,diff_func));
+%     y_2 = diff_func(y_res(i)+expl_euler_step(y_1,delta_t/2,diff_func));
+%     y_3 = diff_func(y_res(i)+expl_euler_step(y_2,delta_t/2,diff_func));
+%     y_4 = diff_func(y_res(i)+expl_euler_step(y_3,delta_t,diff_func));
     
-    y_res(i+1) = y_res(i) + ...
-                 delta_t*(1/6)*(y_1 + ... 
-                                2*y_2 + ...
-                                2*y_3 + ...
-                                y_4);
+   y_res(i+1) = y_res(i) + ...
+                delta_t*(1/6)*(y_1 + ... 
+                               2*y_2 + ...
+                               2*y_3 + ...
+                               y_4);
 end
 
 end
