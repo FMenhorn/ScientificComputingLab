@@ -21,7 +21,7 @@ plot(t,y,'g-')
 
 %3)
 
-y = RungeKutta(diff_func,y0,dt,t_end)
+y = RungeKutta(diff_func,y0,dt,t_end);
 
 plot(t,y,'b-')
 
