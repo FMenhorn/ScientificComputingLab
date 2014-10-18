@@ -12,12 +12,6 @@ for n = 1:len
     temp3 = f(temp31(2));
     temp41 = RKEuler(temp3,y(n),dt,dt);
     temp4 = f(temp41(2));
-    %temp2 = Euler(f,y0+(dt/2)*temp1,dt/2,dt);
-    %temp21 = f(temp2(2));
-    %temp3 = Euler(f,y0+(dt/2)*temp21,dt/2,dt);
-    %temp31 = f(temp3(2));
-    %temp4 = Euler(f,y0+dt*temp31,dt,dt);
-    %temp41 = f(temp4(2)); 
     y(n+1) = y(n) + dt * (1/6) * (temp1 + 2*temp2 + 2*temp3 + temp4);
 end
 

@@ -46,7 +46,6 @@ legend(strcat('Euler with dt =',' ',num2str(dt(1))),...
        'Analytical Solution', 'Location','northwest')
 title(['Comparison of Euler approximations with respect to time step ' ...
        'and analytical solution'])
-hold off
 fprintf('Program paused. Press enter to continue.\n');
 pause;
 
@@ -55,22 +54,13 @@ for i=1:length(dt)
 t = 0:dt(i):t_end;
 p = 10./(1+9.*exp(-t));
 
-y = Heun(eq1,y0,dt(i),t_end);
+y = Heun(eq1,y0,dt,t_end);
 E_heu(i) = sqrt((dt(i)/5)*sum((y-p).^2));
-plot(t,y,'Color',Color{i},'LineStyle','-')
-hold on
-end
-E_heu
-plot(t,p,'Color',Color{length(dt)+1},'LineStyle','-')
+plot(t,y,'r-',t,p,'b-')
 xlabel('Time t')
-legend(strcat('Heun with dt =',' ',num2str(dt(1))),...
-       strcat('Heun with dt =',' ',num2str(dt(2))),...
-       strcat('Heun with dt =',' ',num2str(dt(3))),...
-       strcat('Heun with dt =',' ',num2str(dt(4))),...
-       'Analytical Solution', 'Location','northwest')
-title(['Comparison of Heun approximations with respect to time step ' ...
-       'and analytical solution'])
-hold off
+legend('Heun Approximation','Analytical Solution')
+title('Comparison of Heun approximation and analytical solution')
+end
 fprintf('Program paused. Press enter to continue.\n');
 pause;
 
@@ -79,22 +69,13 @@ for i=1:length(dt)
 t = 0:dt(i):t_end;
 p = 10./(1+9.*exp(-t));
 
-y = RungeKutta(eq1,y0,dt(i),t_end);
-E_RK(i) = sqrt((dt(i)/5)*sum((y-p).^2));
-plot(t,y,'Color',Color{i},'LineStyle','-')
-hold on
-end
-E_RK
-plot(t,p,'Color',Color{length(dt)+1},'LineStyle','-')
+y = RungeKutta(eq1,y0,dt,t_end);
+E_RK(i) = sqrt((dt(i)/5)*sum((y-p).^2))
+plot(t,y,'r-',t,p,'b-')
 xlabel('Time t')
-legend(strcat('Runge-Kutta with dt =',' ',num2str(dt(1))),...
-       strcat('Runge-Kutta with dt =',' ',num2str(dt(2))),...
-       strcat('Runge-Kutta with dt =',' ',num2str(dt(3))),...
-       strcat('Runge-Kutta with dt =',' ',num2str(dt(4))),...
-       'Analytical Solution', 'Location','northwest')
-title(['Comparison of Runge-Kutta approximations with respect to time step ' ...
-       'and analytical solution'])
-hold off
+legend('Runge-Kutta Approximation','Analytical Solution')
+title('Comparison of Runge-Kutta approximation and analytical solution')
+end
 fprintf('Program paused. Press enter to continue.\n');
 pause;
 
