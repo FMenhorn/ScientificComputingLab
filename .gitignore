@@ -58,6 +58,6 @@ coverage.xml
 docs/_build/
 
 #matlab
-.m~
-.asv
+*.m~
+*.asv
 
