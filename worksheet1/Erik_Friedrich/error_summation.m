@@ -23,6 +23,7 @@ function [ result_arr ] = error_summation( func, diff_func, analytic_sol_func, d
     time_steps = 0:delta_t(1):t_end;
     result_analytic = analytic_sol_func(time_steps);
     result_reference = func(t_end,delta_t(1),y_0,diff_func);
+    result_arr(1,1) = delta_t(1);
     result_arr(2,1) = error_calc(delta_t(1), result_reference, result_analytic);
     result_arr(4,1) = error_calc(delta_t(1), result_reference, result_reference);
     
