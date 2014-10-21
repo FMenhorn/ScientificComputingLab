@@ -5,7 +5,7 @@ function [ p ] = analytical_sol( t )
 % INPUT: 
 %       t:          time t (can be a vector)
 % OUTPUT:
-%       p:          solution vector for all time steps of t
+%       p:          result vector for p values for each time step in t
 
 p = 10./(1+9 .*exp(-t));
 
