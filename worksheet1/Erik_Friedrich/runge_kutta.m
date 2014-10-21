@@ -11,32 +11,28 @@ function [ y_res ] = runge_kutta( t_end,delta_t,y_0,diff_func )
 % variables for time discretization
 time_steps = 0:delta_t:t_end;
 
-% initialize result vector
+% initialize result vector and starting value
 y_res = nan(size(time_steps));
 y_res(1) = y_0;
 
 % Runge Kutta method
+% y_x describes the point y_x
+% y_x_diff describes the derivate got by diff_func(y_x) 
 for i = 1:length(time_steps)-1
     
-    y_1 = diff_func(y_res(i));
-    p_2 = y_res(i) + expl_euler_step(delta_t/2,y_1);
-    y_2 = diff_func(p_2);
-    p_3 = y_res(i) + expl_euler_step(delta_t/2,y_2);
-    y_3 = diff_func(p_3);
-    p_4 = y_res(i) + expl_euler_step(delta_t,y_3);
-    y_4 = diff_func(p_4);
-    %y_2 = diff_func(y_res(i)+expl_euler_step(y_res(i)+delta_t/2 * y_1,delta_t/2,diff_func));
-    %y_3 = diff_func(y_res(i)+expl_euler_step(y_res(i)+delta_t/2 * y_2,delta_t/2,diff_func));
-    %y_4 = diff_func(y_res(i)+expl_euler_step(y_res(i)+delta_t * y_3,delta_t,diff_func));
-%     y_2 = diff_func(y_res(i)+expl_euler_step(y_1,delta_t/2,diff_func));
-%     y_3 = diff_func(y_res(i)+expl_euler_step(y_2,delta_t/2,diff_func));
-%     y_4 = diff_func(y_res(i)+expl_euler_step(y_3,delta_t,diff_func));
+    y_1_diff = diff_func(y_res(i));
+    y_2 = y_res(i) + expl_euler_step(delta_t/2,y_1_diff);
+    y_2_diff = diff_func(y_2);
+    y_3 = y_res(i) + expl_euler_step(delta_t/2,y_2_diff);
+    y_3_diff = diff_func(y_3);
+    y_4 = y_res(i) + expl_euler_step(delta_t,y_3_diff);
+    y_4_diff = diff_func(y_4);
     
    y_res(i+1) = y_res(i) + ...
-                delta_t*(1/6)*(y_1 + ... 
-                               2*y_2 + ...
-                               2*y_3 + ...
-                               y_4);
+                delta_t*(1/6)*(y_1_diff + ... 
+                               2*y_2_diff + ...
+                               2*y_3_diff + ...
+                               y_4_diff);
 end
 
 end
