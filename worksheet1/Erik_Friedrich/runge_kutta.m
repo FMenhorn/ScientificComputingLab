@@ -16,23 +16,23 @@ y_res = nan(size(time_steps));
 y_res(1) = y_0;
 
 % Runge Kutta method
-% y_x describes the point y_x
-% y_x_diff describes the derivate got by diff_func(y_x) 
+% y_k describes the point y_k
+% ydiff_k describes the derivative obtained from diff_func(y_k) 
 for i = 1:length(time_steps)-1
     
-    y_1_diff = diff_func(y_res(i));
-    y_2 = y_res(i) + expl_euler_step(delta_t/2,y_1_diff);
-    y_2_diff = diff_func(y_2);
-    y_3 = y_res(i) + expl_euler_step(delta_t/2,y_2_diff);
-    y_3_diff = diff_func(y_3);
-    y_4 = y_res(i) + expl_euler_step(delta_t,y_3_diff);
-    y_4_diff = diff_func(y_4);
+    ydiff_1 = diff_func(y_res(i));
+    y_2 = y_res(i) + expl_euler_step(delta_t/2,ydiff_1);
+    ydiff_2 = diff_func(y_2);
+    y_3 = y_res(i) + expl_euler_step(delta_t/2,ydiff_2);
+    ydiff_3 = diff_func(y_3);
+    y_4 = y_res(i) + expl_euler_step(delta_t,ydiff_3);
+    ydiff_4 = diff_func(y_4);
     
-   y_res(i+1) = y_res(i) + ...
-                delta_t*(1/6)*(y_1_diff + ... 
-                               2*y_2_diff + ...
-                               2*y_3_diff + ...
-                               y_4_diff);
+    y_res(i+1) = y_res(i) + ...
+                delta_t*(1/6)*(ydiff_1 + ... 
+                               2*ydiff_2 + ...
+                               2*ydiff_3 + ...
+                               ydiff_4);
 end
 
 end
