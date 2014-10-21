@@ -105,20 +105,22 @@ column_arr = [];
 for i = 1:length_dt
     column_arr =[column_arr '_ '];
 end
+
+analytic_func = @analytical_sol;
     
 % Explicit Euler
 func = @expl_euler;
-euler_arr = error_summation(func,diff_func,delta_t,t_end,y_0);
+euler_arr = error_summation(func,diff_func, analytic_func, delta_t,t_end,y_0);
 printmat(euler_arr, 'Results of Euler-Method', 'delta_t absolute_error error_factor approx_error', column_arr)
 
 % Heun
 func = @heun;
-heun_arr = error_summation(func, diff_func, delta_t,t_end,y_0);
+heun_arr = error_summation(func, diff_func, analytic_func, delta_t,t_end,y_0);
 printmat(heun_arr, 'Results of Heun-Method', 'delta_t absolute_error error_factor approx_error', column_arr)
 
 % Runge-Kutta
 func = @runge_kutta;
-runge_kutta_arr = error_summation(func, diff_func, delta_t, t_end, y_0);
+runge_kutta_arr = error_summation(func, diff_func, analytic_func, delta_t, t_end, y_0);
 printmat(runge_kutta_arr, 'Results of Runge-Kutta-Method', 'delta_t absolute_error error_factor approx_error', column_arr)
 
 
