@@ -76,7 +76,8 @@ plot(time_steps,runge_kutta_res,'r');
 legend('AnSol', 'ExplEul','Heun','RungeKutta','Location','southeast');
 title(['Comparison of ode solution methods for dt = ' num2str(delta_t)]);
 xlabel('time t in seconds');
-ylabel('y');   
+ylabel('population p');   
+hold off;
 %%
 
 %% c)
@@ -110,6 +111,20 @@ analytic_func = @analytical_sol;
     
 % Explicit Euler
 func = @expl_euler;
+result_calc('Euler', func,diff_func,analytic_func,delta_t,t_end,y_0);
+
+% Heun
+func = @heun;
+result_calc('Heun', func,diff_func,analytic_func,delta_t,t_end,y_0);
+
+% Runge-Kutta
+func = @runge_kutta;
+result_calc('Runge-Kutta', func,diff_func,analytic_func,delta_t,t_end,y_0);
+
+%% d) and e)
+
+% Explicit Euler
+func = @expl_euler;
 euler_arr = error_summation(func,diff_func, analytic_func, delta_t,t_end,y_0);
 
 % Heun
@@ -122,9 +137,10 @@ runge_kutta_arr = error_summation(func, diff_func, analytic_func, delta_t, t_end
 
 %Output
 if (exist('printmat') == 2)
-    printmat(euler_arr, 'Results of Euler-Method', 'delta_t absolute_error error_factor approx_error', column_arr)
-    printmat(heun_arr, 'Results of Heun-Method', 'delta_t absolute_error error_factor approx_error', column_arr)
-    printmat(runge_kutta_arr, 'Results of Runge-Kutta-Method', 'delta_t absolute_error error_factor approx_error', column_arr)
+    row_names = 'delta_t (c)abs_error (d)error_factor (e)appr_error';
+    printmat(euler_arr, 'Results of Euler-Method', row_names , column_arr)
+    printmat(heun_arr, 'Results of Heun-Method', row_names, column_arr)
+    printmat(runge_kutta_arr, 'Results of Runge-Kutta-Method', row_names, column_arr)
 else
     euler_arr
     heun_arr
