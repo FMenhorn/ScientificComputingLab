@@ -91,16 +91,6 @@ length_dt = length(delta_t);
 % initial value
 y_0 = 1;
 
-% initiate arrays with similar structure to worksheet table
-% first row: different delta_t
-% second row: error (see (4))
-% third row: error reduced factor (see (5))
-% fourth row: error_approximated (see (6))
-% example:
-% euler_arr = nan(4,length_dt);
-% heun_arr = nan(4,length_dt);
-% runge_kutta_arr = nan(4,length_dt);
-
 % needed for output. Length of delta_t can be variable
 column_arr = [];
 for i = 1:length_dt
@@ -122,6 +112,15 @@ func = @runge_kutta;
 result_calc('Runge-Kutta', func,diff_func,analytic_func,delta_t,t_end,y_0);
 
 %% d) and e)
+% initiate arrays with similar structure to worksheet table
+% first row: different delta_t
+% second row: error (see (4))
+% third row: error reduced factor (see (5))
+% fourth row: error_approximated (see (6))
+% example:
+% euler_arr = nan(4,length_dt);
+% heun_arr = nan(4,length_dt);
+% runge_kutta_arr = nan(4,length_dt);
 
 % Explicit Euler
 func = @expl_euler;
@@ -142,6 +141,12 @@ if (exist('printmat') == 2)
     printmat(heun_arr, 'Results of Heun-Method', row_names, column_arr)
     printmat(runge_kutta_arr, 'Results of Runge-Kutta-Method', row_names, column_arr)
 else
+    disp('Here follows the result of the calculations for each method.')
+    disp('Row 1 of each table contains delta-t - values,')
+    disp('row 2 contains the calculated error vs analytical solution,')
+    disp('row 3 contains the factor by which the error is reduced compared')
+    disp('with the delta-t - value in the column to the left,')
+    disp('and row 4 contains the error vs. the leftmost delta-t - value.')
     euler_arr
     heun_arr
     runge_kutta_arr
