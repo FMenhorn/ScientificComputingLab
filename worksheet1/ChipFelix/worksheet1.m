@@ -99,7 +99,24 @@ fprintf('Program paused. Proceed with Task e). Press enter to continue.\n');
 pause;
 
 %% d)
-% see tables in Worksheet 1
+
+factor_eul = zeros(1,length(dt)-1);
+factor_heu = zeros(1,length(dt)-1);
+factor_RK = zeros(1,length(dt)-1);
+
+
+for i=1:length(factor_eul)
+    factor_eul(i) = E_eul(i)/E_eul(i+1);
+    factor_heu(i) = E_heu(i)/E_heu(i+1);
+    factor_RK(i) = E_RK(i)/E_RK(i+1);
+end
+
+factor_eul
+factor_heu
+factor_RK
+
+fprintf('Program paused. Proceed with Task d). Press enter to continue.\n');
+pause;
 
 %% e)
 
@@ -122,9 +139,7 @@ for i=length(dt):-1:1
     end
     
     for j=1:stepsize:t_end/dt(length(dt))+1
-        j
-        ct
-        stepsize
+       
         diff_vec(ct) = p(j)-y(ct);
         ct = ct + 1;
         
