@@ -30,7 +30,8 @@
 %                               sqrt(dt/5 sum_k (p_k - p_{k,best})^2)) (6)
 %    where again p_k denotes the approximation and p_{k,best} represents 
 %    the best solution computed with the smallest time step delta_t.
-% Show the result in tables at the end.
+%
+% The results are shown in a table at the end.
 format long
 
 %% variables for time discretization
@@ -58,22 +59,18 @@ hold on;
 %% b)
 % 1) Explicit Euler
 euler_res = expl_euler(t_end,delta_t,y_0,diff_func);
-
-%figure;
 plot(time_steps,euler_res,'g');
 
 % 2) Method of Heun
 heun_res = heun(t_end,delta_t,y_0,diff_func);
-
-%figure;
 plot(time_steps,heun_res,'b');
 
 % 3) Runge-Kutta
 runge_kutta_res = runge_kutta(t_end,delta_t,y_0,diff_func);
-
-%figure;
 plot(time_steps,runge_kutta_res,'r');
-legend('AnSol', 'ExplEul','Heun','RungeKutta','Location','southeast');
+
+% some plot properties
+legend('AnSol', 'ExplEul','Heun','RungeKutta','Location','northwest');
 title(['Comparison of ode solution methods for dt = ' num2str(delta_t)]);
 xlabel('time t in seconds');
 ylabel('population p');   
@@ -91,12 +88,6 @@ length_dt = length(delta_t);
 % initial value
 y_0 = 1;
 
-% needed for output. Length of delta_t can be variable
-column_arr = [];
-for i = 1:length_dt
-    column_arr =[column_arr '_ '];
-end
-
 analytic_func = @analytical_sol;
     
 % Explicit Euler
@@ -110,6 +101,7 @@ result_calc('Heun', func,diff_func,analytic_func,delta_t,t_end,y_0);
 % Runge-Kutta
 func = @runge_kutta;
 result_calc('Runge-Kutta', func,diff_func,analytic_func,delta_t,t_end,y_0);
+%%
 
 %% d) and e)
 % initiate arrays with similar structure to worksheet table
@@ -133,8 +125,16 @@ heun_arr = error_summation(func, diff_func, analytic_func, delta_t,t_end,y_0);
 % Runge-Kutta
 func = @runge_kutta;
 runge_kutta_arr = error_summation(func, diff_func, analytic_func, delta_t, t_end, y_0);
+%%
 
-%Output
+%% Output
+
+% needed for output. Length of delta_t can be variable
+column_arr = [];
+for i = 1:length_dt
+    column_arr =[column_arr '_ '];
+end
+
 if (exist('printmat') == 2)
     row_names = 'delta_t (c)abs_error (d)error_factor (e)appr_error';
     printmat(euler_arr, 'Results of Euler-Method', row_names , column_arr)
@@ -151,6 +151,5 @@ else
     heun_arr
     runge_kutta_arr
 end
-
-
+%%
     
