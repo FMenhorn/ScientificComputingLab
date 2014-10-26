@@ -27,6 +27,8 @@ E_RK = zeros(1,length(dt));
 Color = {[1 1 0], [1 0 1], [0 1 1], [1 0 0], [0 1 0]};
 
 % Euler
+% all Euler aproximation values are calculated along along with the error
+% rate E_eul
 for i=1:length(dt)
 t = 0:dt(i):t_end;
 p = 10./(1+9.*exp(-t));
@@ -51,6 +53,8 @@ fprintf('Program paused. Press enter to continue.\n');
 pause;
 
 % Heun
+% All Heun function approximations are calculated and ploted as well as
+% well as approximation values E_heu
 for i=1:length(dt)
 t = 0:dt(i):t_end;
 p = 10./(1+9.*exp(-t));
@@ -75,6 +79,8 @@ fprintf('Program paused. Press enter to continue.\n');
 pause;
 
 % Runge-Kutta
+% All Runge-Kutta approximations for given values are calcluated and ploted
+% along with error calculation E_RK
 for i=1:length(dt)
 t = 0:dt(i):t_end;
 p = 10./(1+9.*exp(-t));
