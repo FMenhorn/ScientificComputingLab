@@ -5,10 +5,13 @@ function [ handle] = result_calc(  methodname ,func, diff_func, diff_diff_func, 
 %       func:         numerical solver function that returns a vector of function values for timesteps 0-t_end with spacing delta_t for the function dy/dt (y) = diff_func(y), starting at y=y_0 at t=0
 %                     (input: t_end, delta_t, y_0, diff_func, output: vector of y-values with length t_end/delta_t)
 %       diff_func:    function for evaluating the differential at y dy/dt (y) = diff_func(y)
+%       diff_diff_func: dy'/dy_(n+1), differential of the ODE expression
 %       analytical_sol_func: exact solution to the ODE, y(t) = analytic_sol_func(t)
 %       delta_t:      array of timestep lengths used in the numerical integrations, for which different errors are calculated
 %       t_end:        calculation end time
 %       y_0:          initial value for y at t=0
+%       accuracy_limit: stopping criterion for newton solver
+%       iteration_limit: number of maximal iterations in newton solver
 % OUTPUT:
 %       result_arr:   table with different error measurements, each column corresponding to the respective delta_t value
 %                     result_arr(1,:): value of delta_t in that column
