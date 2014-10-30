@@ -7,7 +7,7 @@ function [ p ] = analytical_sol( t )
 % OUTPUT:
 %       p:          result vector for p values for each time step in t
 
-p = 200./(20-10 .*exp(-7*t));
+p = 200./(20-10 .*exp(-7.*t));
 
 end
 

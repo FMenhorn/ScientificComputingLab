@@ -9,6 +9,7 @@ function [ y_next,iteration ] = newton_solver( expression, diff_expression,y_0,a
 %       y_0:    starting value for y_(n+1) 
 %       accuracy_limit: accepted threshhold value, returns y_(n+1) when
 %       |expression(y_(n+1))|<accuracy_limit.
+%       iteration_limit: number of maximal iterations 
 % OUTPUT:
 %       y_next: result value for y_(n+1)
 

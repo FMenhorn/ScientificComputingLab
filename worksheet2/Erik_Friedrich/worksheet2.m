@@ -1,3 +1,5 @@
+clear all
+close all
 %Worksheet 2
 % In this first worksheet, the ode 
 %                   dp/dt = 7*(1-p/10) * p (1) 
@@ -11,17 +13,23 @@ format long
 
 %% function for calculating the differential 
 diff_func = @(p) 7*(1-p./10).*p;
+analytical_func = @analytical_sol;
+
+% initial value
+y_0 = 20;
+
 %%
 % variables for time discretization
 t_end = 5; %t_end stays the same
-delta_t = [1/32 1/16 1/8 1/4 1/2 1]; %delta_t is now an array
+%delta_t = [1/32 1/16 1/8 1/4 1/2 1]; %delta_t is now an array
+delta_t = [1/2 1]; %delta_t is now an array
 delta_t = sort(delta_t); %to make sure that smallest delta_t is last
 length_dt = length(delta_t);
 
 %% a) Plot of Analytical Solution
 figure;
 analytic_time = 0:0.001:t_end;
-plot(analytic_time,analytical_sol(analytic_time),'black');
+plot(analytic_time,analytical_func(analytic_time),'black');
 xlabel('time t');
 ylabel('population p');
 title('Analytic solution');
@@ -40,7 +48,11 @@ iteration_limit = 1000;
 
 % Implicit Euler
 func = @impl_euler;
-result_calc( 'Impl_Euler' ,func, diff_func, diff_diff_func, analytic_func, delta_t, t_end, y_0, accuracy_limit,iteration_limit );
+result_calc( 'Impl_Euler' ,func, diff_func, diff_diff_func, analytical_func, delta_t, t_end, y_0, accuracy_limit,iteration_limit );
+
+% Implicit Euler
+func = @adams_moulton;
+result_calc( 'Adams-Moulton' ,func, diff_func, diff_diff_func, analytical_func, delta_t, t_end, y_0, accuracy_limit,iteration_limit );
 
 return;
 
@@ -76,12 +88,6 @@ t_end = 5; %t_end stays the same
 delta_t = [1/8 1/4 1/2 1]; %delta_t is now an array
 delta_t = sort(delta_t); %to make sure that smallest delta_t is last
 length_dt = length(delta_t);
-
-% ODE settings (stay the same as before)
-% initial value
-y_0 = 1;
-
-analytic_func = @analytical_sol;
     
 % Explicit Euler
 func = @expl_euler;
