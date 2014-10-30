@@ -12,28 +12,38 @@ format long
 %% function for calculating the differential 
 diff_func = @(p) 7*(1-p./10).*p;
 %%
-
-%% a) Plot of Analytical Solution
-figure;
-analytic_time = 0:0.001:t_end;
-plot(analytic_time,analytical_sol(analytic_time),'black');
-
-%%
-
-%% b)
 % variables for time discretization
 t_end = 5; %t_end stays the same
 delta_t = [1/32 1/16 1/8 1/4 1/2 1]; %delta_t is now an array
 delta_t = sort(delta_t); %to make sure that smallest delta_t is last
 length_dt = length(delta_t);
 
+%% a) Plot of Analytical Solution
+figure;
+analytic_time = 0:0.001:t_end;
+plot(analytic_time,analytical_sol(analytic_time),'black');
+xlabel('time t');
+ylabel('population p');
+title('Analytic solution');
+
+%%
+
+%% c)
+
 % ODE settings (stay the same as before)
 % initial value
-y_0 = 20;
+diff_diff_func = @(p) -p./5; % p''
 
-analytic_func = @analytical_sol;
-    
-% Explicit Euler
+%Solver settings
+accuracy_limit = 0.0001;
+iteration_limit = 1000;
+
+% Implicit Euler
+func = @impl_euler;
+result_calc( 'Impl_Euler' ,func, diff_func, diff_diff_func, analytic_func, delta_t, t_end, y_0, accuracy_limit,iteration_limit );
+
+return;
+
 func = @expl_euler;
 result_calc('Euler', func,diff_func,analytic_func,delta_t,t_end,y_0);
 

@@ -1,4 +1,4 @@
-function [ y_next ] = newton_solver( expression, diff_expression,y_0,accuracy_limit)
+function [ y_next,iteration ] = newton_solver( expression, diff_expression,y_0,accuracy_limit,iteration_limit)
 %NEWTON_SOLVER solves the equation = 0 using Newton's method (also known as
 %the Newton-Raphson method)
 % INPUT:
@@ -17,10 +17,12 @@ y_next = y_0;
 
 current_expr_value = expression(y_next);
 
+iteration = 1;
 % iteration loop.
-while (abs(current_expr_value) > accuracy_limit)
+while ((abs(current_expr_value) > accuracy_limit)&&(iteration<iteration_limit))
     y_next = y_next - current_expr_value/diff_expression(y_next);
     current_expr_value = expression (y_next);
+    iteration = iteration +1;
 end
 
 

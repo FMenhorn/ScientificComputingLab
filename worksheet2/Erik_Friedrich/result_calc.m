@@ -1,4 +1,4 @@
-function [ handle] = result_calc(  methodname ,func, diff_func, analytic_sol_func, delta_t, t_end, y_0 )
+function [ handle] = result_calc(  methodname ,func, diff_func, diff_diff_func, analytic_sol_func, delta_t, t_end, y_0, accuracy_limit, iteration_limit )
 %RESULT_CALC computes an array containing the result for different delta_t
 %  and plots it
 % INPUT: 
@@ -19,12 +19,11 @@ function [ handle] = result_calc(  methodname ,func, diff_func, analytic_sol_fun
 
 % initialize variable and result
 length_dt = length(delta_t);
-result_arr = nan(4,length_dt);
 
 % calculate reference function values 
 time_steps = 0:delta_t(1):t_end;
-result_analytic = analytic_sol_func(time_steps);
-result_reference = func(t_end,delta_t(1),y_0,diff_func);
+%result_analytic = analytic_sol_func(time_steps);
+result_reference = func(t_end,delta_t(1),y_0, diff_func, diff_diff_func, accuracy_limit,iteration_limit);
 
 % create figure
 handle = figure;
@@ -39,7 +38,7 @@ plot(time_steps,result_reference,'Color',cmap(1,:))
 % loop over delta_t values to calculate the results for each delta_t and 
 % plot it
 for i = 2:length_dt        
-    result_tmp = func(t_end,delta_t(i),y_0,diff_func);
+    result_tmp = func(t_end,delta_t(i),y_0, diff_func, diff_diff_func, accuracy_limit,iteration_limit);
     plot(0:delta_t(i):t_end,result_tmp,'Color',cmap(i,:));
 end
 
@@ -50,10 +49,10 @@ for i = 1:length_dt
     delta_t_string = [delta_t_string ; strread(['dt=' num2str(delta_t(i))],'%s')];
 end
 legend_string = [ 'analytical' ; delta_t_string];
-legend(legend_string,'Location','northwest');
+legend(legend_string,'Location','northeast');
 
 % set label and title
-xlabel('time t in seconds');
+xlabel('time t');
 ylabel('population p');
 xlim([0 5])
 ylim([0 20]);
