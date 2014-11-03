@@ -1,20 +1,48 @@
 %% Backwards Euler
-
-dif_p = @(p) 7*(1-p/10)*9;               % ODE
-
-p0 = 20;                                 % startvalue
-
-grow = @(t) 200./(20-10*exp(-7.*t));    % Growth function
+% ODE
+dif_p = @(p) 7*(1-p/10)*p;
+% initial value
+p0 = 20;                                 
+% Growth function
+grow = @(t) 200./(20-10*exp(-7.*t));    
 
 %% a)
 t_end=5;
-p = 20;                                  % Y axis value limits
-t = linspace(t_end,0);
-plot(t,grow(t));                         % Plotted p(t) in a graph
+t = linspace(0,t_end,1000);
+plot(t,grow(t));
+title('Population Equation');
+xlabel('Time');
+ylabel('Population');
+
+fprintf('Program paused. Press enter to continue.\n\n');
+pause;
 
 %% b)
-
+% Color definition matrix for graphs
+Color = {[1 1 0], [1 0 1], [0 1 1], [1 0 0], [0 1 0], [0 0 1]};
+% Initialisation of time steps
 dt = [1 1/2 1/4 1/8 1/16 1/32];
+
+for i=3:length(dt)
+    t = 0:dt(i):t_end;
+    y = Euler(dif_p,p0,dt(i),t_end);
+    plot(t,y,'Color',Color{i},'LineStyle','-')
+    hold on
+end
+%t = linspace(0,t_end,1000);
+%plot(t,grow(t),'k-');
+legend('dt = 1/4', 'dt = 1/8', 'dt = 1/16', 'dt = 1/32');
+fprintf('Program paused. Press enter to continue.\n\n');
+pause;
+
+
+
+
+
+
+
+
+
 eu_mat = zeros(t_end/dt(6));
 for i = 6 : 1 
    eu_mat(:, i) = Euler(grow(), p0,dt(i),t_end);
@@ -24,8 +52,7 @@ for i = 6 : 1
    %TODO fix for iteration so that a matrix is created with all Euler
    %values
    
-   % Chip: my personal goal is to have a matrix that contains all solution values
-   % listed in rows for every resolution
+   
    
 end
 
