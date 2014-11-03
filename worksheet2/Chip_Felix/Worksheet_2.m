@@ -8,7 +8,7 @@ grow = @(t) 200./(20-10*exp(-7.*t));    % Growth function
 
 %% a)
 t_end=5;
-p = 20;                                  % number of plotted points
+p = 20;                                  % Y axis value limits
 t = linspace(t_end,0,p)
 plot(t,grow(t));                         % Plotted p(t) in a graph
 
