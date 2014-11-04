@@ -21,8 +21,8 @@ y_0 = 20;
 %%
 % variables for time discretization
 t_end = 5; %t_end stays the same
-%delta_t = [1/32 1/16 1/8 1/4 1/2 1]; %delta_t is now an array
-delta_t = [1/2 1]; %delta_t is now an array
+delta_t = [1/32 1/16 1/8 1/4 1/2 1]; %delta_t is now an array
+%delta_t = [1/2 1]; %delta_t is now an array
 delta_t = sort(delta_t); %to make sure that smallest delta_t is last
 length_dt = length(delta_t);
 
@@ -40,7 +40,7 @@ title('Analytic solution');
 
 % ODE settings (stay the same as before)
 % initial value
-diff_diff_func = @(p) -p./5; % p''
+diff_diff_func = @(p) -7*p./5; % p''
 
 %Solver settings
 accuracy_limit = 0.0001;
@@ -50,57 +50,17 @@ iteration_limit = 1000;
 func = @impl_euler;
 result_calc( 'Impl_Euler' ,func, diff_func, diff_diff_func, analytical_func, delta_t, t_end, y_0, accuracy_limit,iteration_limit );
 
-% Implicit Euler
+% Adams-Moulton
 func = @adams_moulton;
 result_calc( 'Adams-Moulton' ,func, diff_func, diff_diff_func, analytical_func, delta_t, t_end, y_0, accuracy_limit,iteration_limit );
 
-return;
+% Adams-Moulton linearisation 1
+func = @adams_moulton_lin1;
+result_calc( 'Adams-Moulton-lin1' ,func, diff_func, diff_diff_func, analytical_func, delta_t, t_end, y_0, accuracy_limit,iteration_limit );
 
-func = @expl_euler;
-result_calc('Euler', func,diff_func,analytic_func,delta_t,t_end,y_0);
-
-% Heun
-func = @heun;
-result_calc('Heun', func,diff_func,analytic_func,delta_t,t_end,y_0);
-
-return
-
-% 1) Explicit Euler
-euler_res = expl_euler(t_end,delta_t,y_0,diff_func);
-plot(time_steps,euler_res,'g');
-
-% 2) Method of Heun
-heun_res = heun(t_end,delta_t,y_0,diff_func);
-plot(time_steps,heun_res,'b');
-
-% some plot properties
-legend('AnSol', 'ExplEul','Heun','RungeKutta','Location','northwest');
-title(['Comparison of ode solution methods for dt = ' num2str(delta_t)]);
-xlabel('time t in seconds');
-ylabel('population p');   
-hold off;
-return
-%%
-
-%% c)
-% variables for time discretization
-t_end = 5; %t_end stays the same
-delta_t = [1/8 1/4 1/2 1]; %delta_t is now an array
-delta_t = sort(delta_t); %to make sure that smallest delta_t is last
-length_dt = length(delta_t);
-    
-% Explicit Euler
-func = @expl_euler;
-result_calc('Euler', func,diff_func,analytic_func,delta_t,t_end,y_0);
-
-% Heun
-func = @heun;
-result_calc('Heun', func,diff_func,analytic_func,delta_t,t_end,y_0);
-
-% Runge-Kutta
-func = @runge_kutta;
-result_calc('Runge-Kutta', func,diff_func,analytic_func,delta_t,t_end,y_0);
-%%
+% Adams-Moulton linearisation 2
+func = @adams_moulton_lin2;
+result_calc( 'Adams-Moulton-lin2' ,func, diff_func, diff_diff_func, analytical_func, delta_t, t_end, y_0, accuracy_limit,iteration_limit );
 
 %% d) and e)
 % initiate arrays with similar structure to worksheet table
@@ -115,15 +75,27 @@ result_calc('Runge-Kutta', func,diff_func,analytic_func,delta_t,t_end,y_0);
 
 % Explicit Euler
 func = @expl_euler;
-euler_arr = error_summation(func,diff_func, analytic_func, delta_t,t_end,y_0);
+euler_arr = error_summation(func,diff_func, analytical_func, delta_t,t_end,y_0);
 
 % Heun
 func = @heun;
-heun_arr = error_summation(func, diff_func, analytic_func, delta_t,t_end,y_0);
+heun_arr = error_summation(func, diff_func, analytical_func, delta_t,t_end,y_0);
 
-% Runge-Kutta
-func = @runge_kutta;
-runge_kutta_arr = error_summation(func, diff_func, analytic_func, delta_t, t_end, y_0);
+% Implicit Euler
+func = @(t_end,delta_t,y_0, diff_func) impl_euler( t_end,delta_t,y_0, diff_func, diff_diff_func, accuracy_limit,iteration_limit);
+impl_euler_arr = error_summation(func,diff_func, analytical_func, delta_t,t_end,y_0);
+
+% Adams-Moulton
+func = @(t_end,delta_t,y_0, diff_func) adams_moulton( t_end,delta_t,y_0, diff_func, diff_diff_func, accuracy_limit,iteration_limit);
+adams_moulton_arr = error_summation(func, diff_func, analytical_func, delta_t,t_end,y_0);
+
+% Adams-Moulton-lin1
+func = @(t_end,delta_t,y_0, diff_func) adams_moulton_lin1( t_end,delta_t,y_0, diff_func, diff_diff_func, accuracy_limit,iteration_limit);
+adams_moulton_lin1_arr = error_summation(func, diff_func, analytical_func, delta_t, t_end, y_0);
+
+% Adams-Moulton-lin2
+func = @(t_end,delta_t,y_0, diff_func) adams_moulton_lin2( t_end,delta_t,y_0, diff_func, diff_diff_func, accuracy_limit,iteration_limit);
+adams_moulton_lin2_arr = error_summation(func, diff_func, analytical_func, delta_t, t_end, y_0);
 %%
 
 %% Output
@@ -138,7 +110,10 @@ if (exist('printmat') == 2)
     row_names = 'delta_t (c)abs_error (d)error_factor (e)appr_error';
     printmat(euler_arr, 'Results of Euler-Method', row_names , column_arr)
     printmat(heun_arr, 'Results of Heun-Method', row_names, column_arr)
-    printmat(runge_kutta_arr, 'Results of Runge-Kutta-Method', row_names, column_arr)
+    printmat(impl_euler_arr, 'Results of Impl-Euler-Method', row_names , column_arr)
+    printmat(adams_moulton_arr, 'Results of Adams-Moulton-Method', row_names, column_arr)
+    printmat(adams_moulton_lin1_arr, 'Results of Adams-Moulton-Method-Lin1', row_names, column_arr)
+    printmat(adams_moulton_lin2_arr, 'Results of Adams-Moulton-Method-Lin2', row_names, column_arr)
 else
     disp('Here follows the result of the calculations for each method.')
     disp('Row 1 of each table contains delta-t - values,')
