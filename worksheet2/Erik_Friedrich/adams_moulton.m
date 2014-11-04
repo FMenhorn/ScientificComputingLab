@@ -34,6 +34,25 @@ for i = 1:(length(time_steps)-1)
         disp(['At timestep: ' num2str(i)]);
         break;
     end
+    
+%    if (isnan(y_res(i+1))||isinf(y_res(i+1)))
+%         disp(['WARNING: in Adams-Moulton, the newton solver reiterated with different initial guess at delta_t: ' num2str(delta_t)]);
+%         disp(['At timestep: ' num2str(i)]);
+%         y_shift = y_res(i)*rand();
+%         y_res(i+1) = newton_solver( expression_temp, diff_expression,y_res(i)+y_shift,accuracy_limit,iteration_limit)
+%         if (isnan(y_res(i+1))||isinf(y_res(i+1)))
+%             y_shift = y_res(i)*rand();
+%             y_res(i+1) = newton_solver( expression_temp, diff_expression,y_res(i)-y_shift,accuracy_limit,iteration_limit)
+%             if (isnan(y_res(i+1))||isinf(y_res(i+1)))
+%                 disp('The reiteration failed, script continues to next delta_t.');
+%                 break;
+%             end
+%         end
+%         if iteration_steps == iteration_limit
+%             disp(['The newton solver took too long, script continues to next delta_t.']);
+%             break;
+%         end
+%     end
 end
 
 end

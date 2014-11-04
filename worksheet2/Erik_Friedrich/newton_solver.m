@@ -1,4 +1,4 @@
-function [ y_next,iteration ] = newton_solver( expression, diff_expression,y_0,accuracy_limit,iteration_limit)
+function [ y_next,iteration ] = newton_solver( expression, diff_expression,y_guess,accuracy_limit,iteration_limit)
 %NEWTON_SOLVER solves the equation = 0 using Newton's method (also known as
 %the Newton-Raphson method)
 % INPUT:
@@ -14,7 +14,7 @@ function [ y_next,iteration ] = newton_solver( expression, diff_expression,y_0,a
 %       y_next: result value for y_(n+1)
 
 % initialise y
-y_next = y_0;
+y_next = y_guess;
 
 current_expr_value = expression(y_next);
 
