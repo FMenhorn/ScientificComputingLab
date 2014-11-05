@@ -2,7 +2,7 @@
 
 ##Helpful links
 
-(Array2Table)[http://www.mathworks.de/help/matlab/ref/array2table.html]
+[Array2Table]:http://www.mathworks.de/help/matlab/ref/array2table.html
 
 ## TODO's
 
@@ -14,5 +14,6 @@
 *	All:	Compare results with another group
 *	All:	Discuss theoretical aspects of the program
 *	All:	Choose timeslot for this comming tuesday
+*	All:	
 
 ## Theory Discussion
