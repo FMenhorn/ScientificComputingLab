@@ -9,11 +9,12 @@ dt = [1 1/2 1/4 1/8 1/16 1/32];				% time steps
 Er_ExEul = zeros(1, length(dt));			% App. Error of Explicit Euler method
 Er_Heun = zeros(1, length(dt));				% App. Error of method of Heun
 Er_ImEul = zeros(1, length(dt));			% App. Error of Implicit Euler
-Er_AdMol = zeros(1, length(dt));			% App. Error of Implicit Euler
-Er_AML1 = zeros(1, length(dt));				% App. Error of Implicit Euler
-Er_AML2 = zeros(1, length(dt));				% App. Error of Implicit Euler
+Er_AdMol = zeros(1, length(dt));			% App. Error of Adams Moulton method
+Er_AML1 = zeros(1, length(dt));				% App. Error of Adams Moulton Linearization-1
+Er_AML2 = zeros(1, length(dt));				% App. Error of Adams Moulton Linearization-2
 % Color definition matrix for graphs
 Color = {[1 1 0], [1 0 1], [0 1 1], [1 0 0], [0 1 0], [0 0 1], [0 0 0]};
+% Figure position matrix for figures
 FigPosition = {[66 277 512 384], [436 278 512 384], [855 278 512 384], [66 1 512 384], [434 1 512 384],[855 1 512 384]};
 
 %% a)
@@ -51,6 +52,10 @@ axis([0,5,0,20]);
 fprintf(['The following vector shows the errors obtained for comparing '...
          'the euler approximation to the analytical sol. on different steps.\n']);
 disp(Er_ExEul)
+fprintf(['Error Factors for Explicit Euler method: \n']);
+Er_ExEul_Factor = Er_ExEul(1:end-1)./Er_ExEul(2:end);
+disp(Er_ExEul_Factor)
+
 xlabel('Time t')
 legend(strcat('Explicit Euler with dt =',' ',num2str(dt(1))),...
        strcat('Explicit Euler with dt =',' ',num2str(dt(2))),...
@@ -120,6 +125,8 @@ axis([0,5,0,20]);
 fprintf(['The following vector shows the errors obtained for comparing '...
          'the euler approximation to the analytical sol. on different steps.\n']);
 disp(Er_ImEul)
+Er_ImEul_Factor = Er_ImEul(1:end-1)./Er_ImEul(2:end);
+disp(Er_ImEul_Factor)
 xlabel('Time t')
 legend(strcat('dt =',' ',num2str(dt(1))),...
        strcat('dt =',' ',num2str(dt(2))),...
@@ -150,9 +157,10 @@ hold on
 end
 
 plot(t,p,'Color',Color{length(dt)+1},'LineStyle','-')
-axis([0,5,0,20]);
+axis([0,5,-20,20]);				% JFT
 fprintf(['The following vector shows the errors obtained for comparing '...
          'the euler approximation to the analytical sol. on different steps.\n']);
+disp(dt)
 disp(Er_AdMol)
 xlabel('Time t')
 legend(strcat('dt =',' ',num2str(dt(1))),...
@@ -205,6 +213,8 @@ hold off
 % all Adams Moulton linearization1 aproximation values are calculated along with the
 % error Er_AML2
 
+t_end = 30;				% JFT
+
 set(0, 'DefaultFigurePosition', FigPosition{6})
 figure('name','AM Linearization2');
 
@@ -218,7 +228,7 @@ hold on
 end
 
 plot(t,p,'Color',Color{length(dt)+1},'LineStyle','-')
-axis([0,5,0,20]);
+%axis([0,5,0,20]);
 fprintf(['The following vector shows the errors obtained for comparing '...
          'the Adams Moulton with Linearization2 to the analytical sol. on different steps.\n']);
 disp(Er_AML2)
