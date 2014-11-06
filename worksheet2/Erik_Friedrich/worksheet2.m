@@ -98,6 +98,42 @@ func = @(t_end,delta_t,y_0, diff_func) adams_moulton_lin2( t_end,delta_t,y_0, di
 adams_moulton_lin2_arr = error_summation(func, diff_func, analytical_func, delta_t, t_end, y_0);
 %%
 
+%% i) Stability
+
+% parameters2
+stability_accuracy_limit = accuracy_limit * sqrt(8);
+
+% Explicit Euler
+func = @expl_euler;
+stability_tmp = stability_calc(func,diff_func, delta_t,t_end,y_0, stability_accuracy_limit);
+euler_arr = [euler_arr ; stability_tmp];
+
+% Heun
+func = @heun;
+stability_tmp = stability_calc(func,diff_func, delta_t,t_end,y_0, stability_accuracy_limit);
+heun_arr = [heun_arr ; stability_tmp];
+
+% Implicit Euler
+func = @(t_end,delta_t,y_0, diff_func) impl_euler( t_end,delta_t,y_0, diff_func, diff_diff_func, accuracy_limit,iteration_limit);
+stability_tmp = stability_calc(func,diff_func, delta_t,t_end,y_0, stability_accuracy_limit);
+impl_euler_arr = [impl_euler_arr ; stability_tmp];
+
+% Adams-Moulton
+func = @(t_end,delta_t,y_0, diff_func) adams_moulton( t_end,delta_t,y_0, diff_func, diff_diff_func, accuracy_limit,iteration_limit);
+stability_tmp = stability_calc(func,diff_func, delta_t,t_end,y_0, stability_accuracy_limit);
+adams_moulton_arr = [adams_moulton_arr ; stability_tmp];
+
+% Adams-Moulton-lin1
+func = @(t_end,delta_t,y_0, diff_func) adams_moulton_lin1( t_end,delta_t,y_0, diff_func, diff_diff_func, accuracy_limit,iteration_limit);
+stability_tmp = stability_calc(func,diff_func, delta_t,t_end,y_0, stability_accuracy_limit);
+adams_moulton_lin1_arr = [adams_moulton_lin1_arr ; stability_tmp];
+
+% Adams-Moulton-lin2
+func = @(t_end,delta_t,y_0, diff_func) adams_moulton_lin2( t_end,delta_t,y_0, diff_func, diff_diff_func, accuracy_limit,iteration_limit);
+stability_tmp = stability_calc(func,diff_func, delta_t,t_end,y_0, stability_accuracy_limit);
+adams_moulton_lin2_arr = [adams_moulton_lin2_arr ; stability_tmp];
+%%
+
 %% Output
 
 % needed for output. Length of delta_t can be variable
@@ -107,7 +143,7 @@ for i = 1:length_dt
 end
 
 if (exist('printmat') == 2)
-    row_names = 'delta_t (c)abs_error (d)error_factor (e)appr_error';
+    row_names = 'delta_t (c)abs_error (d)error_factor (e)stability';
     printmat(euler_arr, 'Results of Euler-Method', row_names , column_arr)
     printmat(heun_arr, 'Results of Heun-Method', row_names, column_arr)
     printmat(impl_euler_arr, 'Results of Impl-Euler-Method', row_names , column_arr)
