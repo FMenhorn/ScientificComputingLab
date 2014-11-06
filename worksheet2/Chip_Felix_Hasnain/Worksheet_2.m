@@ -33,29 +33,33 @@ plot(t,Analyt_Sol(t));                   % Plotted p(t) in a graph
 % all Explicit Euler aproximation values are calculated along with the
 % error E_Ex_Eul
 
+%Global layout and display configuration
 set(0, 'DefaultFigurePosition', FigPosition{1})
 close all
 figure('name','Explicit Euler');
 
+%Explicit Euler for all dt's
 for i=1:length(dt)
 t = 0:dt(i):t_end;
 p = Analyt_Sol(t);
 
-y = Euler(f,p0,dt(i),t_end);
-Er_ExEul(i) = sqrt((dt(i)/5)*sum((y-p).^2));
-plot(t,y,'Color',Color{i},'LineStyle','-')
+y = Euler(f,p0,dt(i),t_end);                    %Implicit Euler calculation
+Er_ExEul(i) = sqrt((dt(i)/5)*sum((y-p).^2));    %Error calculation
+plot(t,y,'Color',Color{i},'LineStyle','-')      %Plot formating
 hold on
 end
 
+%Printing results
 plot(t,p,'Color',Color{length(dt)+1},'LineStyle','-')
 axis([0,5,0,20]);
 fprintf(['The following vector shows the errors obtained for comparing '...
          'the euler approximation to the analytical sol. on different steps.\n']);
 disp(Er_ExEul)
-fprintf(['Error Factors for Explicit Euler method: \n']);
+fprintf('Error Factors for Explicit Euler method: \n');
 Er_ExEul_Factor = Er_ExEul(1:end-1)./Er_ExEul(2:end);
 disp(Er_ExEul_Factor)
 
+%Labeling
 xlabel('Time t')
 legend(strcat('Explicit Euler with dt =',' ',num2str(dt(1))),...
        strcat('Explicit Euler with dt =',' ',num2str(dt(2))),...
@@ -75,16 +79,18 @@ hold off
 set(0, 'DefaultFigurePosition', FigPosition{2})
 figure('name','Heun');
 
+% Heun Calculaitons
 for i=1:length(dt)
 t = 0:dt(i):t_end;
 p = Analyt_Sol(t);
 
-y = Heun(f,p0,dt(i),t_end);
-Er_Heun(i) = sqrt((dt(i)/5)*sum((y-p).^2));
-plot(t,y,'Color',Color{i},'LineStyle','-')
+y = Heun(f,p0,dt(i),t_end);                 %Heun Calculation
+Er_Heun(i) = sqrt((dt(i)/5)*sum((y-p).^2)); %Diviation error calculation
+plot(t,y,'Color',Color{i},'LineStyle','-')  %Plot for all dt results
 hold on
 end
 
+%Analytical solution Plot
 plot(t,p,'Color',Color{length(dt)+1},'LineStyle','-')
 axis([0,5,0,20]);
 fprintf(['The following vector shows the errors obtained for comparing '...
@@ -108,18 +114,22 @@ hold off
 % all Implicit Euler aproximation values are calculated along with the
 % error Er_ImEul
 
+%Figure layout
 set(0, 'DefaultFigurePosition', FigPosition{3})
 figure('name','Implicit Euler');
 
+%Implicit Euler Calculations
 for i=1:length(dt)
 t = 0:dt(i):t_end;
+%TODO improve this with an if comparitor for only last caseREADME
 p = Analyt_Sol(t);
 y = Im_Eul(f,D_f,p0,dt(i),t_end);
 Er_ImEul(i) = sqrt((dt(i)/5)*sum((y-p).^2));
-plot(t,y,'Color',Color{i},'LineStyle','-')
+plot(t,y,'Color',Color{i},'LineStyle','-') 
 hold on
 end
 
+%Printing results
 plot(t,p,'Color',Color{length(dt)+1},'LineStyle','-')
 axis([0,5,0,20]);
 fprintf(['The following vector shows the errors obtained for comparing '...
@@ -218,6 +228,7 @@ t_end = 30;				% JFT
 set(0, 'DefaultFigurePosition', FigPosition{6})
 figure('name','AM Linearization2');
 
+%plug and play liniarisation formula
 for i=1:length(dt)
 t = 0:dt(i):t_end;
 p = Analyt_Sol(t);
@@ -227,6 +238,7 @@ plot(t,y,'Color',Color{i},'LineStyle','-')
 hold on
 end
 
+%Printing results
 plot(t,p,'Color',Color{length(dt)+1},'LineStyle','-')
 %axis([0,5,0,20]);
 fprintf(['The following vector shows the errors obtained for comparing '...
