@@ -121,9 +121,14 @@ else
     disp('row 3 contains the factor by which the error is reduced compared')
     disp('with the delta-t - value in the column to the left,')
     disp('and row 4 contains the error vs. the leftmost delta-t - value.')
+    
+    
     euler_arr
     heun_arr
-    runge_kutta_arr
+    impl_euler_arr
+    adams_moulton_arr
+    adams_moulton_lin1_arr
+    adams_moulton_lin2_arr
 end
 %%
     
