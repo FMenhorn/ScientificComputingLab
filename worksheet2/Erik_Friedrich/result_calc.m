@@ -1,4 +1,4 @@
-function [ handle] = result_calc(  methodname ,func, diff_func, diff_diff_func, analytic_sol_func, delta_t, t_end, y_0, accuracy_limit, iteration_limit )
+function [ handle] = result_calc(  methodname ,func, diff_func, analytic_sol_func, delta_t, t_end, y_0)
 %RESULT_CALC computes an array containing the result for different delta_t
 %  and plots it
 % INPUT: 
@@ -26,7 +26,7 @@ length_dt = length(delta_t);
 % calculate reference function values 
 time_steps = 0:delta_t(1):t_end;
 %result_analytic = analytic_sol_func(time_steps);
-result_reference = func(t_end,delta_t(1),y_0, diff_func, diff_diff_func, accuracy_limit,iteration_limit);
+result_reference = func(t_end,delta_t(1),y_0, diff_func);
 
 % create figure
 handle = figure;
@@ -41,7 +41,7 @@ plot(time_steps,result_reference,'Color',cmap(1,:))
 % loop over delta_t values to calculate the results for each delta_t and 
 % plot it
 for i = 2:length_dt        
-    result_tmp = func(t_end,delta_t(i),y_0, diff_func, diff_diff_func, accuracy_limit,iteration_limit);
+    result_tmp = func(t_end,delta_t(i),y_0, diff_func);
     plot(0:delta_t(i):t_end,result_tmp,'Color',cmap(i,:));
 end
 

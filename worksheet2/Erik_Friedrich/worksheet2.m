@@ -47,20 +47,20 @@ accuracy_limit = 0.0001;
 iteration_limit = 1000;
 
 % Implicit Euler
-func = @impl_euler;
-result_calc( 'Impl_Euler' ,func, diff_func, diff_diff_func, analytical_func, delta_t, t_end, y_0, accuracy_limit,iteration_limit );
+func = @(t_end,delta_t,y_0, diff_func) impl_euler( t_end,delta_t,y_0, diff_func, diff_diff_func, accuracy_limit,iteration_limit);
+result_calc( 'Impl_Euler' ,func, diff_func, analytical_func, delta_t, t_end, y_0);
 
 % Adams-Moulton
-func = @adams_moulton;
-result_calc( 'Adams-Moulton' ,func, diff_func, diff_diff_func, analytical_func, delta_t, t_end, y_0, accuracy_limit,iteration_limit );
+func = @(t_end,delta_t,y_0, diff_func) adams_moulton( t_end,delta_t,y_0, diff_func, diff_diff_func, accuracy_limit,iteration_limit);
+result_calc( 'Adams-Moulton' ,func, diff_func, analytical_func, delta_t, t_end, y_0);
 
 % Adams-Moulton linearisation 1
-func = @adams_moulton_lin1;
-result_calc( 'Adams-Moulton-lin1' ,func, diff_func, diff_diff_func, analytical_func, delta_t, t_end, y_0, accuracy_limit,iteration_limit );
+func = @(t_end,delta_t,y_0, diff_func) adams_moulton_lin1( t_end,delta_t,y_0, diff_func, diff_diff_func, accuracy_limit,iteration_limit);
+result_calc( 'Adams-Moulton-lin1' ,func, diff_func, analytical_func, delta_t, t_end, y_0);
 
 % Adams-Moulton linearisation 2
-func = @adams_moulton_lin2;
-result_calc( 'Adams-Moulton-lin2' ,func, diff_func, diff_diff_func, analytical_func, delta_t, t_end, y_0, accuracy_limit,iteration_limit );
+func = @(t_end,delta_t,y_0, diff_func) adams_moulton_lin2( t_end,delta_t,y_0, diff_func, diff_diff_func, accuracy_limit,iteration_limit);
+result_calc( 'Adams-Moulton-lin2' ,func, diff_func, analytical_func, delta_t, t_end, y_0);
 
 %% d) and e)
 % initiate arrays with similar structure to worksheet table
