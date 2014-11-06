@@ -25,42 +25,14 @@ diff_expression = @(y_next) ...
 %implicit Euler
 for i = 1:(length(time_steps)-1)
     expression_temp = @(y_next) expression(y_res(i), y_next);
-    counter = 0;
-    while ((isnan(y_res(i+1))||isinf(y_res(i+1)))&&counter < 20)
-        y_res(i) = y_res(i)+y_res(i)*counter*(-1+rand()*2);
-        [y_res(i+1),iteration_steps] = newton_solver(expression_temp,diff_expression,y_res(i),accuracy_limit,iteration_limit);
-        counter = counter + 1;
-    end
+
+    [y_res(i+1),iteration_steps] = newton_solver(expression_temp,diff_expression,y_res(i),accuracy_limit,iteration_limit);
     
-    if counter == 20
-        disp(['In impl. Euler, the newton solver could not find a good starting value for delta_t: ' num2str(delta_t)]);
-        disp(['At timestep: ' num2str(i)]);
-        break;
-    end
     if iteration_steps == iteration_limit
         disp(['In impl. Euler, the newton solver took too long for delta_t: ' num2str(delta_t)]);
         disp(['At timestep: ' num2str(i)]);
         break;
     end
-    
-%     if (isnan(y_res(i+1))||isinf(y_res(i+1)))
-%         disp(['WARNING: in implicit Euler, the newton solver reiterated with different initial guess at delta_t: ' num2str(delta_t)]);
-%         disp(['At timestep: ' num2str(i)]);
-%         y_shift = y_res(i)*rand();
-%         y_res(i+1) = newton_solver( expression_temp, diff_expression,y_res(i)+y_shift,accuracy_limit,iteration_limit)
-%         if (isnan(y_res(i+1))||isinf(y_res(i+1)))
-%             y_shift = y_res(i)*rand;
-%             y_res(i+1) = newton_solver( expression_temp, diff_expression,y_res(i)-y_shift,accuracy_limit,iteration_limit)
-%             if (isnan(y_res(i+1))||isinf(y_res(i+1)))
-%                 disp('The reiteration failed, script continues to next delta_t.');
-%                 break;
-%             end
-%         end
-%         if iteration_steps == iteration_limit
-%             disp(['The newton solver took too long, script continues to next delta_t.']);
-%             break;
-%         end
-%     end
 end
 
 end
