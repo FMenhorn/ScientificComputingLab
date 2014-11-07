@@ -17,17 +17,22 @@ time_steps = 0:delta_t:t_end;
 y_res = nan(size(time_steps));
 y_res(1) = y_0;
 
+% expression whose root is found at next y-value
 expression = @(y, y_next) ...
     (y_next - y - delta_t * diff_func(y_next));
+% derivative to be used in newton-raphson root finding
 diff_expression = @(y_next) ...
     (1 - delta_t * diff_diff_func(y_next));
 
 %implicit Euler
 for i = 1:(length(time_steps)-1)
-    expression_temp = @(y_next) expression(y_res(i), y_next);
-
-    [y_res(i+1),iteration_steps] = newton_solver(expression_temp,diff_expression,y_res(i),accuracy_limit,iteration_limit);
     
+    %find location of next y-value using newton-raphson root finding
+    expression_temp = @(y_next) expression(y_res(i), y_next); %using current value of y
+    
+    [y_res(i+1),iteration_steps] = newton_solver(expression_temp,diff_expression,y_res(i),accuracy_limit,iteration_limit);
+     
+    % display warning and break for undetermined cases
     if iteration_steps == iteration_limit
         disp(['In impl. Euler, the newton solver took too long for delta_t: ' num2str(delta_t)]);
         disp(['At timestep: ' num2str(i)]);

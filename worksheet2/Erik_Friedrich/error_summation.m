@@ -1,10 +1,10 @@
-function [ result_arr ] = error_summation( func, diff_func, analytic_sol_func, delta_t, t_end, y_0 )
+function [ result_arr ] = error_summation( func, diff_func, analytical_sol_func, delta_t, t_end, y_0 )
 %ERROR_SUMMATION computes an array containing different error measures
 % INPUT: 
 %       func:         numerical solver function that returns a vector of function values for timesteps 0-t_end with spacing delta_t for the function dy/dt (y) = diff_func(y), starting at y=y_0 at t=0
 %                     (input: t_end, delta_t, y_0, diff_func, output: vector of y-values with length t_end/delta_t)
 %       diff_func:    function for evaluating the differential at y dy/dt (y) = diff_func(y)
-%       analytical_sol_func: exact solution to the ODE, y(t) = analytic_sol_func(t)
+%       analytical_sol_func: exact solution to the ODE, y(t) = analytical_sol_func(t)
 %       delta_t:      array of timestep lengths used in the numerical integrations, for which different errors are calculated
 %       t_end:        calculation end time
 %       y_0:          initial value for y at t=0
@@ -20,7 +20,7 @@ function [ result_arr ] = error_summation( func, diff_func, analytic_sol_func, d
     
     %calculate reference function values 
     time_steps = 0:delta_t(1):t_end;
-    result_analytic = analytic_sol_func(time_steps);
+    result_analytic = analytical_sol_func(time_steps);
     result_reference = func(t_end,delta_t(1),y_0,diff_func);
     result_arr(1,1) = delta_t(1);
     result_arr(2,1) = error_calc(t_end,delta_t(1), result_reference, result_analytic);
