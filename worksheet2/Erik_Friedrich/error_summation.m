@@ -13,19 +13,17 @@ function [ result_arr ] = error_summation( func, diff_func, analytic_sol_func, d
 %                     result_arr(1,:): value of delta_t in that column
 %                     result_arr(2,:): least-squares error compared with analytical soln
 %                     result_arr(3,i): factor of error size reduction compared with last timestep [=result_arr(2,i-1)/result_arr(2,i)]
-%                     result_arr(4,:): least-squares error compared with the solution using timestep size delta_t(1)
 %                       
     %initialize variable and result
     length_dt = length(delta_t);
-    result_arr = nan(4,length_dt);
+    result_arr = nan(3,length_dt);
     
     %calculate reference function values 
     time_steps = 0:delta_t(1):t_end;
     result_analytic = analytic_sol_func(time_steps);
     result_reference = func(t_end,delta_t(1),y_0,diff_func);
     result_arr(1,1) = delta_t(1);
-    result_arr(2,1) = error_calc(delta_t(1), result_reference, result_analytic);
-    result_arr(4,1) = error_calc(delta_t(1), result_reference, result_reference);
+    result_arr(2,1) = error_calc(t_end,delta_t(1), result_reference, result_analytic);
     
     %loop over delta_t values
     for i = 2:length_dt        
@@ -39,8 +37,7 @@ function [ result_arr ] = error_summation( func, diff_func, analytic_sol_func, d
         result_ref_tmp = result_reference(1:delta_t_factor:end);
         
         %compute errors
-        result_arr(2,i) = error_calc(delta_t(i), result_tmp, result_analytic_temp);
-        result_arr(4,i) = error_calc(delta_t(i), result_tmp, result_ref_tmp);
+        result_arr(2,i) = error_calc(t_end, delta_t(i), result_tmp, result_analytic_temp);
 
         %compute error reduction factors
         result_arr(3,i) = result_arr(2,i)/result_arr(2,i-1);

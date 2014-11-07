@@ -1,5 +1,5 @@
 function [ y_next_old,iteration ] = newton_solver( expression, diff_expression,y_guess,accuracy_limit,iteration_limit)
-%NEWTON_SOLVER solves the equation = 0 using Newton's method (also known as
+%NEWTON_SOLVER solves the equation "expression = 0" using Newton's method (also known as
 %the Newton-Raphson method)
 % INPUT:
 %       expression:  expression for which the root is to be calculated. Takes
@@ -21,8 +21,8 @@ current_expr_value = expression(y_next_old);
 
 iteration = 1;
 % iteration loop.
-while ((abs(y_next-y_next_old)>accuracy_limit) ...          %we are close, means that y-value does not change much with each iteration
-        &&(abs(current_expr_value) > accuracy_limit) ...    %also, we are finding where the expression is zero
+while (((abs(y_next-y_next_old)>accuracy_limit) ...          % we are close, means that y-value does not change much with each iteration
+        ||(abs(current_expr_value) > accuracy_limit)) ...    % also, we are finding where the expression is zero
         &&(iteration<iteration_limit))                      % break if too many iterations without finding.
     y_next_old = y_next;
     y_next = y_next_old - current_expr_value/diff_expression(y_next_old);

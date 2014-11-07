@@ -28,12 +28,7 @@ diff_expression = @(y_next) ...
 %Adams-Moulton integration
 for i = 1:(length(time_steps)-1)
     expression_temp = @(y_next) expression(y_res(i), y_next);
-%     counter = 0;
-%     while ((isnan(y_res(i+1))||isinf(y_res(i+1)))&&counter < 20)
-%         y_res(i) = y_res(i)+y_res(i)*counter*(-1+rand()*2);
     [y_res(i+1),iteration_steps] = newton_solver(expression_temp,diff_expression,y_res(i),accuracy_limit,iteration_limit);
-%         counter = counter + 1;
-%     end
     
     if iteration_steps == iteration_limit
         disp(['In Adamas-Moulton, the newton solver took too long for delta_t: ' num2str(delta_t)]);
