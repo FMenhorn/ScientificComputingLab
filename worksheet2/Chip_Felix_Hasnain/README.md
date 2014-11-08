@@ -18,7 +18,7 @@
 *	All:		Discuss theoretical aspects of the program
 *	All:		Choose timeslot for this comming tuesday
 *	DONE:	~~Pauses for tasks~~
-*	All:		TODO on line 124 Worksheet2.m
+*	DONE:		TODO on line 124 Worksheet2.m
 
 ## Theory Discussion
 ###Open questions:
