@@ -256,71 +256,59 @@ hold off
 fprintf('Program paused. Proceed with Task g). Press enter to continue.\n\n');
 pause;
 %% Task g)
-% The following errors have been obtained from the calculations performed
-% in task b) and d).
-
-fprintf(['The following vector shows the errors obtained for comparing '...
-         'the explicit euler approximation to the analytical sol. on different steps.\n']);
-disp(Er_ExEul)
-
-fprintf(['The following vector shows the errors obtained for comparing '...
-         'the Heun approximation to the analytical sol. on different steps.\n']);
-disp(Er_Heun)
-
-fprintf(['The following vector shows the errors obtained for comparing '...
-         'the implicit euler approximation to the analytical sol. on different steps.\n']);
-disp(Er_ImEul)
-
-fprintf(['The following vector shows the errors obtained for comparing '...
-         'the Adams Moulton approximation to the analytical sol. on different steps.\n']);
-disp(Er_AdMol)
-
-fprintf(['The following vector shows the errors obtained for comparing '...
-         'the Adams Moulton with Linearization1 to the analytical sol. on different steps.\n']);
-disp(Er_AML1)
-
-fprintf(['The following vector shows the errors obtained for comparing '...
-         'the Adams Moulton with Linearization2 to the analytical sol. on different steps.\n']);
-disp(Er_AML2)
+% see output table and pdf file
 
 %% Task h)
 % The following error factors have been obtained from the calculations
 % performed in task b).
 
-fprintf('Error Factors for Explicit Euler method: \n');
 Er_ExEul_Factor = Er_ExEul(1:end-1)./Er_ExEul(2:end);
-disp(Er_ExEul_Factor)
 
-fprintf('Error Factors for Heun method: \n');
 Er_Heun_Factor = Er_Heun(1:end-1)./Er_Heun(2:end);
-disp(Er_Heun_Factor)
 
-fprintf('Error Factors for Implicit Euler method: \n');
 Er_ImEul_Factor = Er_ImEul(1:end-1)./Er_ImEul(2:end);
-disp(Er_ImEul_Factor)
 
-fprintf('Error Factors for Adam Moulton method: \n');
 Er_AdMol_Factor = Er_AdMol(1:end-1)./Er_AdMol(2:end);
-disp(Er_AdMol_Factor)
 
-fprintf('Error Factors for First Linearised AM method: \n');
 Er_AML1_Factor = Er_AML1(1:end-1)./Er_AML1(2:end);
-disp(Er_AML1_Factor)
 
-fprintf('Error Factors for Second Linearised AM method: \n');
 Er_AML2_Factor = Er_AML2(1:end-1)./Er_AML2(2:end);
-disp(Er_AML2_Factor)
-
-fprintf('Program paused. Proceed with Task e). Press enter to continue.\n\n');
-pause;
 
 %% Output all information
 close all;
 %set(0, 'DefaultFigurePosition', FigPosition{1})
-f1 = figure('name','Explicit Euler Data');
+f1 = figure('name','Error Data');
 cnames = {'dt = 1', 'dt = 1/2', 'dt = 1/4', ...
           'dt = 1/8', 'dt = 1/16', 'dt = 1/32'};
-rnames = {'Error', 'Error Factor'};
+      
+ExEul_rnames = {'Explicit Euler Error', 'Error Factor'};
 EulerTable = uitable(f1,'Data',[Er_ExEul;[0,Er_ExEul_Factor]],...
-                'ColumnName',cnames, 'RowName', rnames);
-%Euler = array2table([dt;Er_ExEul;[0,Er_ExEul_Factor]])
+                'ColumnName',cnames, 'RowName', ExEul_rnames,...
+                'Position', [0 500 700 100]);
+
+Heun_rnames = {'Heun Error', 'Error Factor'};
+HeunTable = uitable(f1,'Data',[Er_Heun;[0,Er_Heun_Factor]],...
+                'ColumnName',cnames, 'RowName', Heun_rnames,...
+                'Position', [700 500 700 100]);
+            
+ImEul_rnames = {'Implicit Euler Error', 'Error Factor'};
+ImEulTable = uitable(f1,'Data',[Er_ImEul;[0,Er_ImEul_Factor]],...
+                'ColumnName',cnames, 'RowName', ImEul_rnames,...
+                'Position', [0 300 700 100]);
+            
+AM_rnames = {'Adams Moulton Error', 'Error Factor'};
+AMTable = uitable(f1,'Data',[Er_AdMol;[0,Er_AdMol_Factor]],...
+                'ColumnName',cnames, 'RowName', AM_rnames,...
+                'Position', [700 300 700 100]);
+            
+AML1_rnames = {'AM L1 Error', 'Error Factor'};
+AML1Table = uitable(f1,'Data',[Er_AML1;[0,Er_AML1_Factor]],...
+                'ColumnName',cnames, 'RowName', AML1_rnames,...
+                'Position', [0 100 700 100]);
+            
+AML2_rnames = {'AM L2 Error', 'Error Factor'};
+AML2Table = uitable(f1,'Data',[Er_AML2;[0,Er_AML2_Factor]],...
+                'ColumnName',cnames, 'RowName', AML2_rnames,...
+                'Position', [700 100 700 100]);
+            
+            
