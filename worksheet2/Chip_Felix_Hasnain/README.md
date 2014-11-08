@@ -9,15 +9,19 @@
 
 ## TODO's
 
-*	All:		Stopping Criteria 
-*	Chip:		~~Commenting~~ with improved variables names
-*	All:		Print errors in a readable way (hint table)
-*	All:		Improve graph time stamp printing in lable with fractions
-	(matlab command with numerator and denomitor of fractions)
+*	DONE:		~~Stopping Criteria ~~
+*	DONE:		~~Commenting with improved variables names~~
+*	DONE:		~~Print errors in a readable way (hint table)~~
+*	DONE:		~~Improve graph time stamp printing in lable with fractions
+	(matlab command with numerator and denomitor of fractions)~~
 *	All:		Compare results with another group
 *	All:		Discuss theoretical aspects of the program
 *	All:		Choose timeslot for this comming tuesday
-*	Felix:	Pauses for tasks
+*	DONE:	~~Pauses for tasks~~
 *	All:		TODO on line 124 Worksheet2.m
 
 ## Theory Discussion
+###Open questions:
+ *Why does linearisation 2 not converge?
+ *Observe smaller time steps and see whether euler and heun error reduction factors are consistent with worksheet 1. Because atm, it looks quite strange, but maybe just necessary to look at a few more time steps. 
+ *What is in general the order of adams moulton respectively their linearisations? Consistent with our results?

@@ -32,7 +32,7 @@ ylabel('p(t)');
 title('Analytical Solution');
 
 fprintf('Program paused. Proceed with Task b). Press enter to continue.\n\n');
-pause;
+%pause;
 
 %% b)
 
@@ -45,7 +45,7 @@ set(0, 'DefaultFigurePosition', FigPosition{1})
 close all
 figure('name','Explicit Euler');
 
-%Explicit Euler for all dt's
+%Explicit ler for all dt's
 for i=1:length(dt)
 t = 0:dt(i):t_end;
 p = Analyt_Sol(t);
@@ -109,8 +109,8 @@ title(['Comparison of Heun approximations wrt time step ' ...
        'and analytical solution.'])
 hold off
 
-fprintf('Program paused. Proceed with Task b). Press enter to continue.\n\n');
-pause;
+fprintf('Program paused. Proceed with Task c). Press enter to continue.\n\n');
+%pause;
 
 %% c) and d)
 % Implicit Euler
@@ -182,12 +182,13 @@ title(['Comparison of ADAMS MOULTON approximations wrt time step ' ...
 hold off
 
 fprintf('Program paused. Proceed with Task e). Press enter to continue.\n\n');
-pause;
+%pause;
 
 %% e) and f)
 % Adams Moulton Linearization 1
 % all Adams Moulton linearization1 approximation values are calculated along with the
 % error Er_AML1
+
 
 set(0, 'DefaultFigurePosition', FigPosition{5})
 figure('name','AM Linearization1');
@@ -254,7 +255,7 @@ title(['Comparison of AM Linearization2 approximations wrt time step ' ...
 hold off
 
 fprintf('Program paused. Proceed with Task g). Press enter to continue.\n\n');
-pause;
+%pause;
 %% Task g)
 % see output table and pdf file
 
@@ -284,31 +285,31 @@ cnames = {'dt = 1', 'dt = 1/2', 'dt = 1/4', ...
 ExEul_rnames = {'Explicit Euler Error', 'Error Factor'};
 EulerTable = uitable(f1,'Data',[Er_ExEul;[0,Er_ExEul_Factor]],...
                 'ColumnName',cnames, 'RowName', ExEul_rnames,...
-                'Position', [0 500 700 100]);
+                'Position', [0 400 660 75]);
 
 Heun_rnames = {'Heun Error', 'Error Factor'};
 HeunTable = uitable(f1,'Data',[Er_Heun;[0,Er_Heun_Factor]],...
                 'ColumnName',cnames, 'RowName', Heun_rnames,...
-                'Position', [700 500 700 100]);
+                'Position', [0 320 660 75]);
             
 ImEul_rnames = {'Implicit Euler Error', 'Error Factor'};
 ImEulTable = uitable(f1,'Data',[Er_ImEul;[0,Er_ImEul_Factor]],...
                 'ColumnName',cnames, 'RowName', ImEul_rnames,...
-                'Position', [0 300 700 100]);
+                'Position', [0 240 660 75]);
             
 AM_rnames = {'Adams Moulton Error', 'Error Factor'};
 AMTable = uitable(f1,'Data',[Er_AdMol;[0,Er_AdMol_Factor]],...
                 'ColumnName',cnames, 'RowName', AM_rnames,...
-                'Position', [700 300 700 100]);
+                'Position', [0 160 660 75]);
             
 AML1_rnames = {'AM L1 Error', 'Error Factor'};
 AML1Table = uitable(f1,'Data',[Er_AML1;[0,Er_AML1_Factor]],...
                 'ColumnName',cnames, 'RowName', AML1_rnames,...
-                'Position', [0 100 700 100]);
+                'Position', [0 80 660 75]);
             
 AML2_rnames = {'AM L2 Error', 'Error Factor'};
 AML2Table = uitable(f1,'Data',[Er_AML2;[0,Er_AML2_Factor]],...
                 'ColumnName',cnames, 'RowName', AML2_rnames,...
-                'Position', [700 100 700 100]);
+                'Position', [0 0 660 75]);
             
             
