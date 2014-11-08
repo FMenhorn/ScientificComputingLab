@@ -9,7 +9,7 @@
 
 ## TODO's
 
-*	DONE:		~~Stopping Criteria ~~
+*	DONE:		~~Stopping Criteria~~
 *	DONE:		~~Commenting with improved variables names~~
 *	DONE:		~~Print errors in a readable way (hint table)~~
 *	DONE:		~~Improve graph time stamp printing in lable with fractions
@@ -22,6 +22,6 @@
 
 ## Theory Discussion
 ###Open questions:
- *Why does linearisation 2 not converge?
- *Observe smaller time steps and see whether euler and heun error reduction factors are consistent with worksheet 1. Because atm, it looks quite strange, but maybe just necessary to look at a few more time steps. 
- *What is in general the order of adams moulton respectively their linearisations? Consistent with our results?
+ *	Why does linearisation 2 not converge?
+ *	Observe smaller time steps and see whether euler and heun error reduction factors are consistent with worksheet 1. Because atm, it looks quite strange, but maybe just necessary to look at a few more time steps. 
+ *	What is in general the order of adams moulton respectively their linearisations? Consistent with our results?
