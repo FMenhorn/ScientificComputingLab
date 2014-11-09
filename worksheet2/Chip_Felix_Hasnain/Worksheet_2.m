@@ -1,5 +1,7 @@
 %% Variables
 
+clear all;
+
 Analyt_Sol = @(t) 200./(20-10*exp(-7.*t));  % Analytical Solution
 f = @(p) 7*(1-p/10)*p;						% ODE diff(p) = f(p)
 D_f = @(p)(7*(1-p/5));						% diff of f wrt p
@@ -12,15 +14,16 @@ Er_ImEul = zeros(1, length(dt));			% App. Error of Implicit Euler
 Er_AdMol = zeros(1, length(dt));			% App. Error of Adams Moulton method
 Er_AML1 = zeros(1, length(dt));				% App. Error of Adams Moulton Linearization-1
 Er_AML2 = zeros(1, length(dt));				% App. Error of Adams Moulton Linearization-2
+
 % Color definition matrix for graphs
 Color = {[1 1 0], [1 0 1], [0 1 1], [1 0 0], [0 1 0], [0 0 1], [0 0 0]};
 % Figure position matrix for figures
+
 FigPosition = {[66 277 512 384], [436 278 512 384], [855 278 512 384], ...
                [66 1 512 384], [434 1 512 384],[855 1 512 384]};
 
 %% a)
 
-%p = 20;                                  % Y axis value limits
 t = linspace(t_end,0);
 close all
 set(0, 'DefaultFigurePosition', FigPosition{1})
@@ -32,7 +35,7 @@ ylabel('p(t)');
 title('Analytical Solution');
 
 fprintf('Program paused. Proceed with Task b). Press enter to continue.\n\n');
-%pause;
+pause;
 
 %% b)
 
@@ -110,7 +113,7 @@ title(['Comparison of Heun approximations wrt time step ' ...
 hold off
 
 fprintf('Program paused. Proceed with Task c). Press enter to continue.\n\n');
-%pause;
+pause;
 
 %% c) and d)
 % Implicit Euler
@@ -182,7 +185,7 @@ title(['Comparison of ADAMS MOULTON approximations wrt time step ' ...
 hold off
 
 fprintf('Program paused. Proceed with Task e). Press enter to continue.\n\n');
-%pause;
+pause;
 
 %% e) and f)
 % Adams Moulton Linearization 1
@@ -222,7 +225,7 @@ hold off
 % all Adams Moulton linearization1 aproximation values are calculated along with the
 % error Er_AML2
 
-t_end = 30;	% JFT (Increased time frame to observe "long time" behaviour)
+%t_end = 30;	% JFT (Increased time frame to observe "long time" behaviour)
 
 set(0, 'DefaultFigurePosition', FigPosition{6})
 figure('name','AM Linearization2');
@@ -255,7 +258,7 @@ title(['Comparison of AM Linearization2 approximations wrt time step ' ...
 hold off
 
 fprintf('Program paused. Proceed with Task g). Press enter to continue.\n\n');
-%pause;
+pause;
 %% Task g)
 % see output table and pdf file
 
@@ -276,40 +279,42 @@ Er_AML1_Factor = Er_AML1(1:end-1)./Er_AML1(2:end);
 Er_AML2_Factor = Er_AML2(1:end-1)./Er_AML2(2:end);
 
 %% Output all information
+
 close all;
-%set(0, 'DefaultFigurePosition', FigPosition{1})
+
 f1 = figure('name','Error Data');
+set(f1, 'Position', [300 150 780 490])
 cnames = {'dt = 1', 'dt = 1/2', 'dt = 1/4', ...
           'dt = 1/8', 'dt = 1/16', 'dt = 1/32'};
       
 ExEul_rnames = {'Explicit Euler Error', 'Error Factor'};
 EulerTable = uitable(f1,'Data',[Er_ExEul;[0,Er_ExEul_Factor]],...
                 'ColumnName',cnames, 'RowName', ExEul_rnames,...
-                'Position', [0 400 660 75]);
+                'Position', [10 410 763 75], 'ColumnWidth', {90});
 
-Heun_rnames = {'Heun Error', 'Error Factor'};
+Heun_rnames = {'Heun Error', '    Error Factor    '};
 HeunTable = uitable(f1,'Data',[Er_Heun;[0,Er_Heun_Factor]],...
                 'ColumnName',cnames, 'RowName', Heun_rnames,...
-                'Position', [0 320 660 75]);
+                'Position', [10 330 763 75], 'ColumnWidth', {90});
             
-ImEul_rnames = {'Implicit Euler Error', 'Error Factor'};
+ImEul_rnames = {'Implicit Euler Error', '    Error Factor    '};
 ImEulTable = uitable(f1,'Data',[Er_ImEul;[0,Er_ImEul_Factor]],...
                 'ColumnName',cnames, 'RowName', ImEul_rnames,...
-                'Position', [0 240 660 75]);
+                'Position', [10 250 763 75], 'ColumnWidth', {90});
             
-AM_rnames = {'Adams Moulton Error', 'Error Factor'};
+AM_rnames = {'Adams Moulton Error', '    Error Factor    '};
 AMTable = uitable(f1,'Data',[Er_AdMol;[0,Er_AdMol_Factor]],...
                 'ColumnName',cnames, 'RowName', AM_rnames,...
-                'Position', [0 160 660 75]);
+                'Position', [10 170 763 75], 'ColumnWidth', {90});
             
-AML1_rnames = {'AM L1 Error', 'Error Factor'};
+AML1_rnames = {'AM L1 Error', '    Error Factor    '};
 AML1Table = uitable(f1,'Data',[Er_AML1;[0,Er_AML1_Factor]],...
                 'ColumnName',cnames, 'RowName', AML1_rnames,...
-                'Position', [0 80 660 75]);
+                'Position', [10 90 763 75], 'ColumnWidth', {90});
             
-AML2_rnames = {'AM L2 Error', 'Error Factor'};
+AML2_rnames = {'AM L2 Error', '    Error Factor    '};
 AML2Table = uitable(f1,'Data',[Er_AML2;[0,Er_AML2_Factor]],...
                 'ColumnName',cnames, 'RowName', AML2_rnames,...
-                'Position', [0 0 660 75]);
-            
-            
+                'Position', [10 10 763 75], 'ColumnWidth', {90});
+
+set(0, 'DefaultFigurePosition', FigPosition{1})				% Restore default figure position
