@@ -51,15 +51,14 @@ set(0, 'DefaultFigurePosition', FigPosition{1})
 close all
 figure('name','Explicit Euler');
 
-%Explicit ler for all dt's
+%Explicit Euler for all dt's
 for i=1:length(dt)
 t = 0:dt(i):t_end;
 p = Analyt_Sol(t);
 
 y = Euler(f,p0,dt(i),t_end);                    %Euler calculation
 Er_ExEul(i) = sqrt((dt(i)/5)*sum((y-p).^2));    %Error calculation
-% Stability "calculation" as to whether y approaches p for "large t"
-Stab_mat(i,1) = abs(p(t_end/dt(i)+1)-y(t_end/dt(i)+1))<Stab_lim;
+Stab_mat(i,1) = StabilityCheck(p,y,Stab_lim);   %Stability "calculation"
 plot(t,y,'Color',Color{i},'LineStyle','-')      %Plot formating
 hold on
 end
@@ -96,8 +95,7 @@ p = Analyt_Sol(t);
 
 y = Heun(f,p0,dt(i),t_end);                 %Heun Calculation
 Er_Heun(i) = sqrt((dt(i)/5)*sum((y-p).^2)); %Deviation error calculation
-% Stability "calculation" as to whether y approaches p for "large t"
-Stab_mat(i,2) = abs(p(t_end/dt(i)+1)-y(t_end/dt(i)+1))<Stab_lim;
+Stab_mat(i,2) = StabilityCheck(p,y,Stab_lim);   %Stability "calculation"
 plot(t,y,'Color',Color{i},'LineStyle','-')  %Plot for all dt results
 hold on
 end
@@ -137,8 +135,7 @@ t = 0:dt(i):t_end;
 p = Analyt_Sol(t);
 y = Im_Eul(f,D_f,p0,dt(i),t_end);
 Er_ImEul(i) = sqrt((dt(i)/5)*sum((y-p).^2));
-% Stability "calculation" as to whether y approaches p for "large t"
-Stab_mat(i,3) = abs(p(t_end/dt(i)+1)-y(t_end/dt(i)+1))<Stab_lim;
+Stab_mat(i,3) = StabilityCheck(p,y,Stab_lim);   %Stability "calculation"
 plot(t,y,'Color',Color{i},'LineStyle','-') 
 hold on
 end
@@ -173,8 +170,7 @@ t = 0:dt(i):t_end;
 p = Analyt_Sol(t);
 y = Adams_Moulton(f,D_f,p0,dt(i),t_end);
 Er_AdMol(i) = sqrt((dt(i)/5)*sum((y-p).^2));
-% Stability "calculation" as to whether y approaches p for "large t"
-Stab_mat(i,4) = abs(p(t_end/dt(i)+1)-y(t_end/dt(i)+1))<Stab_lim;
+Stab_mat(i,4) = StabilityCheck(p,y,Stab_lim);   %Stability "calculation"
 plot(t,y,'Color',Color{i},'LineStyle','-')
 hold on
 end
@@ -212,8 +208,7 @@ t = 0:dt(i):t_end;
 p = Analyt_Sol(t);
 y = AM_Lin1(p0,dt(i),t_end);
 Er_AML1(i) = sqrt((dt(i)/5)*sum((y-p).^2));
-% Stability "calculation" as to whether y approaches p for "large t"
-Stab_mat(i,5) = abs(p(t_end/dt(i)+1)-y(t_end/dt(i)+1))<Stab_lim;
+Stab_mat(i,5) = StabilityCheck(p,y,Stab_lim);   %Stability "calculation"
 plot(t,y,'Color',Color{i},'LineStyle','-')
 hold on
 end
@@ -249,8 +244,7 @@ t = 0:dt(i):t_end;
 p = Analyt_Sol(t);
 y = AM_Lin2(p0,dt(i),t_end);
 Er_AML2(i) = sqrt((dt(i)/5)*sum((y-p).^2));
-% Stability "calculation" as to whether y approaches p for "large t"
-Stab_mat(i,6) = abs(p(t_end/dt(i)+1)-y(t_end/dt(i)+1))<Stab_lim;
+Stab_mat(i,6) = StabilityCheck(p,y,Stab_lim);   %Stability "calculation"
 plot(t,y,'Color',Color{i},'LineStyle','-')
 hold on
 end
@@ -343,7 +337,7 @@ StabCnames = {'Explicit Euler', 'Heun', 'Implicit Euler', ...
           'Adams Moulton', 'AM L1', 'AM L2'};
 StabRnames = {'dt = 1', 'dt = 1/2', 'dt = 1/4', ...
           'dt = 1/8', 'dt = 1/16', 'dt = 1/32'};
-EulerTable = uitable(f2,'Data',Stab_mat,...
+StabilityTableTable = uitable(f2,'Data',Stab_mat,...
                 'ColumnName',StabCnames, 'RowName', StabRnames,...
                 'Position', [0 0 700 500]);
             
