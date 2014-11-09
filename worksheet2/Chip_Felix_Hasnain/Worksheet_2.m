@@ -293,7 +293,7 @@ Er_AML2_Factor = Er_AML2(1:end-1)./Er_AML2(2:end);
 
 % Output Error Matrices 
 f1 = figure('name','Error Data');
-set(f1, 'Position', [300 150 780 490])
+set(f1, 'Position', [300 280 780 490])
 cnames = {'dt = 1', 'dt = 1/2', 'dt = 1/4', ...
           'dt = 1/8', 'dt = 1/16', 'dt = 1/32'};
       
@@ -331,16 +331,12 @@ set(0, 'DefaultFigurePosition', FigPosition{1})				% Restore default figure posi
 
 % Output Stability Matrix
 
-f2 = figure('name','Stability Matrix (1...stable | 0...unstable');
-set(f1, 'Position', [300 150 780 490])
+f2 = figure('name','Stability Matrix (1...stable | 0...unstable)');
+set(f2, 'Position', [325 25 730 156])
 StabCnames = {'Explicit Euler', 'Heun', 'Implicit Euler', ...
           'Adams Moulton', 'AM L1', 'AM L2'};
 StabRnames = {'dt = 1', 'dt = 1/2', 'dt = 1/4', ...
           'dt = 1/8', 'dt = 1/16', 'dt = 1/32'};
 StabilityTableTable = uitable(f2,'Data',Stab_mat,...
                 'ColumnName',StabCnames, 'RowName', StabRnames,...
-                'Position', [0 0 700 500]);
-            
-Stab_mat
-
-
+                'Position', [10 10 710 136], 'ColumnWidth', {100});
