@@ -63,6 +63,7 @@ for i = 2 : length(y_out)
 		disp(strcat('Adams Moulton method for dt ',num2str(d_t), ...
                     ' stopped by the stopping criteria'));
 		y_out(i) = Inf;
+        %y_out = Inf;
 		break;
 	end%if
 	

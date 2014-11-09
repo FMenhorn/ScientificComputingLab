@@ -14,6 +14,9 @@ Er_ImEul = zeros(1, length(dt));			% App. Error of Implicit Euler
 Er_AdMol = zeros(1, length(dt));			% App. Error of Adams Moulton method
 Er_AML1 = zeros(1, length(dt));				% App. Error of Adams Moulton Linearization-1
 Er_AML2 = zeros(1, length(dt));				% App. Error of Adams Moulton Linearization-2
+Stab_mat = zeros(length(dt),6);             % Stability Matrix for 6 time
+                                            % steps and 6 methods
+Stab_lim = 10e-1;                           % Predefined accuracy limit
 
 % Color definition matrix for graphs
 Color = {[1 1 0], [1 0 1], [0 1 1], [1 0 0], [0 1 0], [0 0 1], [0 0 0]};
@@ -55,6 +58,8 @@ p = Analyt_Sol(t);
 
 y = Euler(f,p0,dt(i),t_end);                    %Euler calculation
 Er_ExEul(i) = sqrt((dt(i)/5)*sum((y-p).^2));    %Error calculation
+% Stability "calculation" as to whether y approaches p for "large t"
+Stab_mat(i,1) = abs(p(t_end/dt(i)+1)-y(t_end/dt(i)+1))<Stab_lim;
 plot(t,y,'Color',Color{i},'LineStyle','-')      %Plot formating
 hold on
 end
@@ -91,6 +96,8 @@ p = Analyt_Sol(t);
 
 y = Heun(f,p0,dt(i),t_end);                 %Heun Calculation
 Er_Heun(i) = sqrt((dt(i)/5)*sum((y-p).^2)); %Deviation error calculation
+% Stability "calculation" as to whether y approaches p for "large t"
+Stab_mat(i,2) = abs(p(t_end/dt(i)+1)-y(t_end/dt(i)+1))<Stab_lim;
 plot(t,y,'Color',Color{i},'LineStyle','-')  %Plot for all dt results
 hold on
 end
@@ -130,6 +137,8 @@ t = 0:dt(i):t_end;
 p = Analyt_Sol(t);
 y = Im_Eul(f,D_f,p0,dt(i),t_end);
 Er_ImEul(i) = sqrt((dt(i)/5)*sum((y-p).^2));
+% Stability "calculation" as to whether y approaches p for "large t"
+Stab_mat(i,3) = abs(p(t_end/dt(i)+1)-y(t_end/dt(i)+1))<Stab_lim;
 plot(t,y,'Color',Color{i},'LineStyle','-') 
 hold on
 end
@@ -164,6 +173,8 @@ t = 0:dt(i):t_end;
 p = Analyt_Sol(t);
 y = Adams_Moulton(f,D_f,p0,dt(i),t_end);
 Er_AdMol(i) = sqrt((dt(i)/5)*sum((y-p).^2));
+% Stability "calculation" as to whether y approaches p for "large t"
+Stab_mat(i,4) = abs(p(t_end/dt(i)+1)-y(t_end/dt(i)+1))<Stab_lim;
 plot(t,y,'Color',Color{i},'LineStyle','-')
 hold on
 end
@@ -201,6 +212,8 @@ t = 0:dt(i):t_end;
 p = Analyt_Sol(t);
 y = AM_Lin1(p0,dt(i),t_end);
 Er_AML1(i) = sqrt((dt(i)/5)*sum((y-p).^2));
+% Stability "calculation" as to whether y approaches p for "large t"
+Stab_mat(i,5) = abs(p(t_end/dt(i)+1)-y(t_end/dt(i)+1))<Stab_lim;
 plot(t,y,'Color',Color{i},'LineStyle','-')
 hold on
 end
@@ -236,6 +249,8 @@ t = 0:dt(i):t_end;
 p = Analyt_Sol(t);
 y = AM_Lin2(p0,dt(i),t_end);
 Er_AML2(i) = sqrt((dt(i)/5)*sum((y-p).^2));
+% Stability "calculation" as to whether y approaches p for "large t"
+Stab_mat(i,6) = abs(p(t_end/dt(i)+1)-y(t_end/dt(i)+1))<Stab_lim;
 plot(t,y,'Color',Color{i},'LineStyle','-')
 hold on
 end
@@ -280,8 +295,9 @@ Er_AML2_Factor = Er_AML2(1:end-1)./Er_AML2(2:end);
 
 %% Output all information
 
-close all;
+%close all;
 
+% Output Error Matrices 
 f1 = figure('name','Error Data');
 set(f1, 'Position', [300 150 780 490])
 cnames = {'dt = 1', 'dt = 1/2', 'dt = 1/4', ...
@@ -318,3 +334,19 @@ AML2Table = uitable(f1,'Data',[Er_AML2;[0,Er_AML2_Factor]],...
                 'Position', [10 10 763 75], 'ColumnWidth', {90});
 
 set(0, 'DefaultFigurePosition', FigPosition{1})				% Restore default figure position
+
+% Output Stability Matrix
+
+f2 = figure('name','Stability Matrix (1...stable | 0...unstable');
+set(f1, 'Position', [300 150 780 490])
+StabCnames = {'Explicit Euler', 'Heun', 'Implicit Euler', ...
+          'Adams Moulton', 'AM L1', 'AM L2'};
+StabRnames = {'dt = 1', 'dt = 1/2', 'dt = 1/4', ...
+          'dt = 1/8', 'dt = 1/16', 'dt = 1/32'};
+EulerTable = uitable(f2,'Data',Stab_mat,...
+                'ColumnName',StabCnames, 'RowName', StabRnames,...
+                'Position', [0 0 700 500]);
+            
+Stab_mat
+
+

@@ -22,7 +22,7 @@ for i = 2 : length(y_out)
 	y_prev = y_out(i-1);
 	G = @(y)(y - y_prev - (d_t/2)*(7*(1-y_prev/10)*y_prev + 7*(1-y/10)*y_prev));
 	dG = @(y)(d_t*7*y_prev/20+1);
-		x = y_out(i-1);
+	x = y_out(i-1);
 	x_prev = x + 1;							% initializing x_prev ie. |x-x_prev| > TOL
 	itCount = 0;							% Iterations count
 	
@@ -60,6 +60,7 @@ for i = 2 : length(y_out)
 		disp(strcat('Adams Moulton Linearization-1 method for dt ',num2str(d_t), ...
                     ' stopped by the stopping criteria'));
 		y_out(i) = Inf;
+        %y_out = Inf;
 		break;
 	end%if
 	
