@@ -1,6 +1,6 @@
 %% Variables
 
-CLEAR ALL;
+clear all;
 
 Analyt_Sol = @(t) 200./(20-10*exp(-7.*t));  % Analytical Solution
 f = @(p) 7*(1-p/10)*p;						% ODE diff(p) = f(p)
