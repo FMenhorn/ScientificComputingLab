@@ -52,7 +52,7 @@ for i = 2 : length(y_out)
 			break;
 		end%if
 		
-		x_prev = x;
+		x_prev = x
 		x = x- (G(x))/(dG(x));
 		itCount = itCount + 1;
 		

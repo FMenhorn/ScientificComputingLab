@@ -4,10 +4,15 @@ clear all;
 
 Analyt_Sol = @(t) 200./(20-10*exp(-7.*t));  % Analytical Solution
 f = @(p) 7*(1-p/10)*p;						% ODE diff(p) = f(p)
+%f = @(p) 7*(1-(5-p)/10)*(5-p);						% ODE diff(p) = f(p)
+
 D_f = @(p)(7*(1-p/5));						% diff of f wrt p
+%D_f = @(p)(7*(p-5/5));						% diff of f wrt p
+
 p0 = 20;									% Initial value
 t_end = 5;									% end time
-dt = [1 1/2 1/4 1/8 1/16 1/32];				% time steps
+dt = [1 1/2 1/4 1/8 1/16 1/32];
+%dt = [1/8 1/16 1/32 1/64 1/128 1/256];			% time steps
 Er_ExEul = zeros(1, length(dt));			% App. Error of Explicit Euler method
 Er_Heun = zeros(1, length(dt));				% App. Error of method of Heun
 Er_ImEul = zeros(1, length(dt));			% App. Error of Implicit Euler
@@ -251,7 +256,7 @@ end
 
 %Printing results
 plot(t,p,'Color',Color{length(dt)+1},'LineStyle','-')
-axis([0,t_end,0,p0]);
+axis([0,t_end,-p0,p0]);
 
 xlabel('Time t')
 ylabel('p(t)')
