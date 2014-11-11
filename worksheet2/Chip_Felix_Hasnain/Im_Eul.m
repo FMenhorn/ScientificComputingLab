@@ -42,7 +42,7 @@ for i = 2 : length(y_out)
 		end%if
 		if(abs(x) > 1.d6)
 			disp('Newtons Method: Iterate too large');
-		failureFlag = 1;
+            failureFlag = 1;
 			break;
 		end%if
 		if(dG(x) == 0)

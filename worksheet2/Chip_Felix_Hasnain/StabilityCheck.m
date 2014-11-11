@@ -8,6 +8,7 @@ function [ flag ] = StabilityCheck( p,y,limit )
 %   analytical solution in t_end
 %   2) In order to account for oscillations, the two last absolute
 %   differences are compared.
+%   Returns 1 for stable aprox. and 0 for instable aprox.
 absDif1 = abs(p(length(p))-y(length(y)));
 absDif2 = abs(p(length(p)-1)-y(length(y)-1));
 flag = absDif1 < limit && absDif1 - absDif2 < limit;
