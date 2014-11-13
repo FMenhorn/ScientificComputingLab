@@ -1,4 +1,4 @@
-#[Worksheet 3](worksheet3/worksheet3.pdf) Documentation
+#[Worksheet 3](worksheet3.pdf) Documentation
 
 ## Dates and Fates
 *	*Wenesday 12.11.14* Start of WS3
