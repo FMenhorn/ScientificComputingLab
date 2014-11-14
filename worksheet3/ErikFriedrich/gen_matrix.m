@@ -5,7 +5,7 @@ function [ A ] = gen_matrix( N_x, N_y )
 h_x = 1/(N_x+1)
 h_y = 1/(N_y+1)
 
-A = zeros(N_x*N_y)
+A = zeros(N_x*N_y);
 
 for i = 1:N_x*N_y
     for j = 1:N_x*N_y
