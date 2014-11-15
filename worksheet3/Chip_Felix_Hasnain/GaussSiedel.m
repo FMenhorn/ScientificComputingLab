@@ -3,26 +3,24 @@ function [ Xbnd ] = GaussSiedel( Nx, Ny )
 %PDE
 %   Detailed explanation goes here
 
-LIM = 1e-4;
-IMAX = 90000;
+LIM = 1e-4;   %max precision value
+IMAX = 90000; %max iterations limit value
 
 Xbnd = zeros(Nx+2, Ny+2);
 Xbnd(2: end-1,2:end-1) = 1;
 
-
-% for T mxn, N = m*n
-N = Nx*Ny;
+%defining various coefs for center diference method
+% for T mxn, N = m*n 
+N = Nx*Ny; 
 a = (Nx+1)^2;
 c = (Ny+1)^2;
 b = -2*(a + c);
-
-%implementing the equation for finding B
-
-
 B = zeros(Nx,Ny);
 Rmat = zeros(Nx,Ny);
 hx = 1/(Nx + 1);
 hy = 1/(Ny + 1);
+
+%implementing the equation for finding B
 for i=1:Nx
 	for j=1:Ny
 		x = i*hx;
@@ -30,6 +28,7 @@ for i=1:Nx
 		B(i,j) = -2*pi^2*sin(pi*x)*sin(pi*y);
 	end
 end
+
 % TESTING
 % Xbnd
 % surf(B);
