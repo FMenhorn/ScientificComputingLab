@@ -13,8 +13,10 @@ Xbnd(2: end-1,2:end-1) = 1;
 %defining various coefs for center diference method
 % for T mxn, N = m*n 
 N = (Nx+2)*(Ny+2); 
-a = (Nx+3)^2;
-c = (Ny+3)^2;
+%a = (Nx+3)^2;
+a = (Nx+1)^2; % Assumed to be correct
+%c = (Ny+3)^2;
+c = (Ny+1)^2; % Assumed to be correct
 b = -2*(a + c);
 B = zeros(Nx + 2,Ny + 2);
 Rmat = zeros(Nx,Ny);
