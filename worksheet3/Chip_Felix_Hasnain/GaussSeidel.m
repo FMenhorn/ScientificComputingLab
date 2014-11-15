@@ -1,4 +1,4 @@
-function [ Xbnd ] = GaussSiedel( Nx, Ny )
+function [ Xbnd ] = GaussSeidel( Nx, Ny )
 %GAUSSSIEDEL This function implements the Gauss Siedel Method for solving
 %PDE
 %   Detailed explanation goes here
@@ -25,20 +25,14 @@ hy = 1/(Ny + 1);
 figure;
 
 %implementing the equation for finding B
-% for i=1:Nx + 2
-% 	for j=1:Ny + 2
-% 		x = (i-1)*hx;
-% 		y = (j-1)*hy;
-% 		B(i,j) = -2*pi^2*sin(pi*x)*sin(pi*y);
-% 	end
-% end
+for i=1:Nx + 2
+	for j=1:Ny + 2
+		x = (i-1)*hx;
+		y = (j-1)*hy;
+		B(i,j) = -2*pi^2*sin(pi*x)*sin(pi*y);
+	end
+end
 
-x = 1:hx:Nx+2;
-y = 1:hy:Ny+2;
-
-f = @(x,y)(-2*pi^2*sin(pi.*x).*sin(pi.*y));
-
-[A,B] = f(x,y)
 
 [row,col] = size(B);
 disp(row)
