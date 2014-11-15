@@ -4,7 +4,7 @@ function [ Xbnd ] = GaussSiedel( Nx, Ny )
 %   Detailed explanation goes here
 
 LIM = 1e-4;
-IMAX = 900;
+IMAX = 90000;
 
 Xbnd = zeros(Nx+2, Ny+2);
 Xbnd(2: end-1,2:end-1) = 1;
@@ -36,8 +36,8 @@ end
 %TODO define LIM comparison loop
 R = 1;
 n = 0;
-while R > LIM || ...
-		n < IMAX 
+ while R > LIM || ...
+    	n < IMAX 
 	for j=1:Ny
 		for i=1:Nx
 			ii = i+1;
@@ -50,6 +50,7 @@ while R > LIM || ...
 	%
 	R = sqrt(sum(sum((Rmat.^2)))/(N));
 	n = n + 1;
+    disp(n);
 	if n == IMAX
 		disp ('IMAX has been reached')
 	end
