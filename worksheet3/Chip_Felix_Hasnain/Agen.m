@@ -3,12 +3,12 @@ function [ A ] = Agen( Nx, Ny )
 %  This function will generate a second degree center step finite
 %  difference transform matrix based on the dimensions of Nx x Ny
 
-
+% TODO: COMMENT ON HOW WE DERIVED PARAMETERS a, b and c!!!!!
 
 % for T mxn, N = m*n
 N = Nx*Ny;
-a = Nx^2;
-c = Ny^2;
+a = (Nx+1)^2;
+c = (Ny+1)^2;
 b = -2*(a + c);
 
 A = zeros(N);
