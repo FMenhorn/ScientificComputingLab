@@ -9,7 +9,12 @@
 
 ## TODO's
 
-*	Copy worksheet into folder
+
+*	DONE ~copy worksheet to folder~
+*	Hasnain and Chip- impliment part 
+*	Felix- impliment the Gaus Seidel Solver
+*	Felix- impliment the Matlab solver for d1)
+*	
 
 ## Theory Discussion
 ### Theory links:
