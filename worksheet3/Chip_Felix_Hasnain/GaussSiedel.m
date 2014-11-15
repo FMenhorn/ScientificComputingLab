@@ -4,15 +4,15 @@ function [ Xbnd ] = GaussSiedel( Nx, Ny )
 %   Detailed explanation goes here
 
 LIM = 1e-4;   %max precision value
-IMAX = 1000; %max iterations limit value
+IMAX = 9000; %max iterations limit value
 R = ones(IMAX);
 
 Xbnd = zeros(Nx+2, Ny+2);
-Xbnd(2: end-1,2:end-1) = 1;
+Xbnd(2: end-1,2:end-1) = 0;
 
 %defining various coefs for center diference method
 % for T mxn, N = m*n 
-N = (Nx+2)*(Ny+2); 
+%N = (Nx+2)*(Ny+2); 
 %a = (Nx+3)^2;
 a = (Nx+1)^2; % Assumed to be correct
 %c = (Ny+3)^2;
@@ -41,17 +41,18 @@ disp(col)
 %TODO define LIM comparison loop
 %R = 1;
 n = 1;
- while R(n) > LIM || ...
-    	n < IMAX 
+% while R(n) > LIM || ...
+%      n < IMAX
+while n<IMAX
 	for j=2:Ny+1
 		for i=2:Nx+1
 			%Nx+2xNy+2  NxxNy
 			Xbnd(i,j) = ((B(i,j) - a*Xbnd(i-1,j) - a*Xbnd(i + 1,j)- c*Xbnd(i,j -1) - c*Xbnd(i,j +1))/b);
-			Rmat(i,j) = (B(i,j) -b*Xbnd(i,j) -a*Xbnd(i-1,j) - a*Xbnd(i+1,j)- c*Xbnd(i,j-1) - c*Xbnd(i,j+1));
+			%Rmat(i,j) = (B(i,j) -b*Xbnd(i,j) -a*Xbnd(i-1,j) - a*Xbnd(i+1,j)- c*Xbnd(i,j-1) - c*Xbnd(i,j+1));
 		end
 	end
 	%
-	R(n) = sqrt(sum(sum((Rmat.^2)))/(N));
+	%R(n) = sqrt(sum(sum((Rmat.^2)))/(N));
 	n = n + 1;
     %disp(n);
 	if n == IMAX

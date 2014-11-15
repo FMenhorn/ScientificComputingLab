@@ -43,7 +43,6 @@ for j=1:Ny
 		A(i+(j-1)*Nx,:) = B(:)'; 
 	end
 end
-disp(A)
 
 end
 
