@@ -35,8 +35,8 @@ for j=1:Ny
 		if(j<Ny)
 			B(i,j+1) = c;
 		end
-		disp(B);
-		disp(B(:)')
+		%disp(B);
+		%disp(B(:)')
 		%stringing out B matrix & addiing to row
 		% the term i+-(j-1)*m discribes the correlation between the
 		% itteration position in T and the row number in A
