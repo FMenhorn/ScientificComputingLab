@@ -1,7 +1,7 @@
 function [ y ] = Heun( f,y0,dt,t_end )
 %HEUN The Heun function model is based on a similar concept as
-%   the Euler model, but averages the slop for the function points n
-%   and n+1.  This leads to a more percice result than with Heun
+%   the Euler model, but averages the slope for the function points n
+%   and n+1.  This leads to a more precise result than with Euler.
 %   
 len = t_end/dt; %the number of steps is calculated
 
@@ -18,4 +18,3 @@ for n = 1:len
 end
 
 end
-

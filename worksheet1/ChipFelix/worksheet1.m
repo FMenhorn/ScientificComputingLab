@@ -26,7 +26,7 @@ E_heu = zeros(1,length(dt));
 E_RK = zeros(1,length(dt));
 
 % Color definition matrix for graphs
-Color = {[1 1 0], [1 0 1], [0 1 1], [1 0 0], [0 1 0]};
+Color = {[1 1 0], [1 0 1], [0 1 1], [1 0 0], [0 1 0], [0 0 0]};
 
 % Euler
 % all Euler aproximation values are calculated along with the error E_eul
