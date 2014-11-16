@@ -11,10 +11,17 @@
 
 
 *	DONE ~copy worksheet to folder~
-*	Hasnain and Chip- impliment part 
-*	Felix- impliment the Gaus Seidel Solver
-*	Felix- impliment the Matlab solver for d1)
-*	
+*	DONE ~Hasnain and Chip- impliment part~ 
+*	DONE ~Felix- impliment the Gaus Seidel Solver~
+*	DONE ~Felix- impliment the Matlab solver for d1)~
+*	Write the outputs in a better format (with exponents for clear visualization)
+*	Code review and refine the commenting, variable names and syntax if possible.
+*	Check whether the storage is calculated correctly or not. Most of the values look same in table
+*	Confirm the extent of time estimates (time for A and B generation to be included or not). Correct if needed
+*	Confirm the extent of storage, which variables should be considered..
+*	Compare the results with another group.
+*	Fill the worksheet.
+*	Upload project, discuss preferences for timeslot and choose time slot.
 
 ## Theory Discussion
 ### Theory links:
@@ -30,3 +37,5 @@
 
 ###Open questions:
  
+*	What is internally happening with solving opposed to linsolve? It is even faster!!! Why???
+*	So, why is Sparse so incredibly fast and for that, why not always just using sparse matrices intead of iterative scheme?

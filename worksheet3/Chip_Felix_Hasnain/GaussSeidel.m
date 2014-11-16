@@ -22,8 +22,6 @@ Rmat = zeros(Nx,Ny);
 hx = 1/(Nx + 1);
 hy = 1/(Ny + 1);
 
-figure;
-
 %implementing the equation for finding B
 % for i=1:Nx + 2
 % 	for j=1:Ny + 2
@@ -66,13 +64,13 @@ while R > LIM && n < IMAX
 	if n == IMAX
 		disp ('IMAX has been reached')
     end
-    
-    loglog(n,R);
-    hold on;
-    
+%     
+%     loglog(n,R);
+%     hold on;
+%     
 end
 %R
-hold off;
+% hold off;
 
 end
 

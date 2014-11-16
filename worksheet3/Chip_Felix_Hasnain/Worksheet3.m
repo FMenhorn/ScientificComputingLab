@@ -8,99 +8,202 @@
 % on the unit square with homogeneous Dirichlet boundary conditions
 % T(x,y)=0 for all (x,y) at the boundaries of the unit square.
 
+
+%% VARIABLES
+
+f = @(x,y)(-2*pi^2*sin(pi*x).*sin(pi*y));
+f_ana = @(x,y)(sin(pi*x).*sin(pi*y));
+Nx = [7 15 31 63];
+Ny = [7 15 31 63];
+
+% Time requirements for different grid sizes with full matrix
+Rtime_Full = zeros(1,length(Nx));
+% Storage requirement for different grid sizes with full matrix
+Strg_Full = zeros(1,length(Nx));
+% Time requirements for different grid sizes with sparse matrix
+Rtime_Sparse = zeros(1,length(Nx));
+% Storage requirement for different grid sizes with sparse matrix
+Strg_Sparse = zeros(1,length(Nx));
+% Time requirements for different grid sizes for Gauss Siedel method
+Rtime_GS = zeros(1,length(Nx));
+% Storage requirement for different grid sizes for Gauss Siedel method
+Strg_GS = zeros(1,length(Nx));
+
 %% Task a), b) and c)
 
 % see functions Agen.m, GaussSeidel.m, RHS.m
 
-%% Task d) and e)
+%% Task d), e)
 
-Nx = [7 15 31 63];
-Ny = [7 15 31 63];
+% 1) DIRECT SOLUTION WITH FULL MATRIX
 
-f = @(x,y)(-2*pi^2*sin(pi*x).*sin(pi*y));
-f_ana = @(x,y)(sin(pi*x).*sin(pi*y));
+figure('name','Direct Solution with Full Matrix');
+set(gcf, 'Position', get(0,'Screensize'));
 
-% 1) MATLAB DIRECT SOLVER
-
-Rtime_Mds = zeros(length(Nx));
-Stor_Mds = zeros(length(Nx));
-Subplot(2,4)
 for n = 1:length(Nx)
+	hx = 1/(Nx(n) + 1);
+	hy = 1/(Ny(n) + 1);
+	A = Agen(Nx(n),Ny(n));
+	b = RHS(Nx(n),Ny(n),f);
+	b = b(:);
+	tic;
+	x = linsolve(A,b);
+% 	Calculating the runtime
+	Rtime_Full(n) = toc;
+
+	X = zeros(Nx(n), Ny(n));
+	X(1:end) = x(1:end);
+	X = padarray(X,[1,1]);
+
+% 	Coloured surface plot of Temperatue
+	subplot(2,4,n)
+	[Xmesh,Ymesh] = meshgrid(0:hx:1,0:hy:1);
+	surf(Xmesh,Ymesh,X);
+	axis([0 1 0 1 0 1]);
+	title(strcat('Surface plot: Nx = ', num2str(Nx(n)), ...
+		', Ny = ', num2str(Ny(n))));
+	xlabel('x-axis');
+	ylabel('y-axis');
+	zlabel('Temperature');
 	
+% 	Contour plot of Temperature
+	subplot(2,4,n+4)
+	contour(Xmesh,Ymesh,X)
+	xlabel('x-axis');
+	ylabel('y-axis');
+	title(strcat('Contour plot: Nx = ', num2str(Nx(n)), ...
+		', Ny = ', num2str(Ny(n))));
+	
+% 	Calculating the storage
+	Strg_Full(n) = numel(A) + numel(X) + numel(b);
+end
+
+
+% 2) DIRECT SOLUTION WITH SPARSE MATRIX
+tic;
+
+%subplot(2,4)
+figure('name','Direct Solution with Sparse Matrix');
+set(gcf, 'Position', get(0,'Screensize'));
+
+for n = 1:length(Nx)
+	hx = 1/(Nx(n) + 1);
+	hy = 1/(Ny(n) + 1);
+	A = Agen(Nx(n),Ny(n));
+	b = RHS(Nx(n),Ny(n),f);
+	b = b(:);
+	tic;
+	A_sparse = sparse(A);
+	x = A_sparse\b;
+% 	Calculating the runtime
+	Rtime_Sparse(n) = toc;
+	X = zeros(Nx(n), Ny(n));
+	X(1:end) = x(1:end);
+	X = padarray(X,[1,1]);
+ 		
+% 	Calculating the storage
+	Strg_Sparse(n) = numel(A_sparse) + numel(X) + numel(b);
+	
+% 	Coloured surface plot of Temperatue
+	subplot(2,4,n)
+	[Xmesh,Ymesh] = meshgrid(0:hx:1,0:hy:1);
+	surf(Xmesh,Ymesh,X);
+	axis([0 1 0 1 0 1]);
+	title(strcat('Surface plot: Nx = ', num2str(Nx(n)), ...
+		', Ny = ', num2str(Ny(n))));
+	xlabel('x-axis');
+	ylabel('y-axis');
+	zlabel('Temperature');
+	
+% 	Contour plot of Temperature
+	subplot(2,4,n+4)
+	contour(Xmesh,Ymesh,X)
+	xlabel('x-axis');
+	ylabel('y-axis');
+	title(strcat('Contour plot: Nx = ', num2str(Nx(n)), ...
+		', Ny = ', num2str(Ny(n))));
+	
+end
+
+
+% 3) ITERATIVE SOLUTION WITH GAUSS SEIDEL METHOD
+
+figure('name','Iterative Solution with Gauss Seidel Method');
+set(gcf, 'Position', get(0,'Screensize'));
+
+for n = 1:length(Nx)
 	hx = 1/(Nx(n) + 1);
 	hy = 1/(Ny(n) + 1);
 	
-	A = Agen(Nx,Ny);
-	b_temp = RHS(Nx,Ny,f);
-	
-	b = zeros(Nx*Ny,1);
-	for i=1:Ny
-		b(Nx*(i-1)+1:Nx*(i-1)+Nx) = b_temp(:,i);
-	end
-	
+	b = RHS(Nx(n),Ny(n),f);
 	tic;
-	x = linsolve(A,b);
-	t1 = toc;
-	t1
+	X = GaussSeidel( Nx(n), Ny(n), b );
+% 	Calculating the runtime
+	Rtime_GS(n) = toc;
+ 		
+% 	Calculating the storage
+	Strg_GS(n) = numel(A_sparse) + numel(X) + numel(b);
 	
-	tic;
-	x = A\b;
-	t2 = toc;
-	t2
+% 	Coloured surface plot of Temperatue
+	subplot(2,4,n)
+	[Xmesh,Ymesh] = meshgrid(0:hx:1,0:hy:1);
+	surf(Xmesh,Ymesh,X);
+	axis([0 1 0 1 0 1]);
+	title(strcat('Surface plot: Nx = ', num2str(Nx(n)), ...
+		', Ny = ', num2str(Ny(n))));
+	xlabel('x-axis');
+	ylabel('y-axis');
+	zlabel('Temperature');
 	
-	% TODO: What is internally happening with \ solving opposed to linsolve?
-	%       \ is even faster!!! Why???
-	
-	X = zeros(Nx+2, Ny+2);
-	for i=1:Ny
-		X(2:Nx+1,i+1) = x(Nx*(i-1)+1:Nx*(i-1)+Nx);
-	end
-	
-	surf(X);
-end
-% 2)
-tic;
-
-%A = Agen(Nx,Ny);
-A_sparse = sparse(A);
-%b_temp = RHS(Nx,Ny,f);
-
-% b = zeros(Nx*Ny,1);
-% for i=1:Ny
-%     b(Nx*(i-1)+1:Nx*(i-1)+Nx) = b_temp(:,i);
-% end
-
-x = A_sparse\b;
-t3 = toc;
-t3
-
-X = zeros(Nx+2, Ny+2);
-for i=1:Ny
-    X(2:Nx+1,i+1) = x(Nx*(i-1)+1:Nx*(i-1)+Nx);
+% 	Contour plot of Temperature
+	subplot(2,4,n+4)
+	contour(Xmesh,Ymesh,X)
+	xlabel('x-axis');
+	ylabel('y-axis');
+	title(strcat('Contour plot: Nx = ', num2str(Nx(n)), ...
+		', Ny = ', num2str(Ny(n))));
 end
 
-surf(X);
 
-% So, why is Sparse so incredibly fast and for that, why not always just
-% using sparse matrices intead of iterative scheme?
+%% Task f) and g) 
 
-% 3)
+% Runtime and storage requirements already calculated in the previous
+% section
 
-Nx = [7 15 31 63 127];
+Nx = [7 15 3 6 12];
 Ny = Nx;
 len = length(Nx);
-e = zeros(len,1);
+e = zeros(1,len);
 
+GSerr = zeros(1,len);
 for i=1:len
-    tic;
     X = GaussSeidel(Nx(i),Ny(i),RHS(Nx(i),Ny(i),f));
-    t4 = toc;
-    t4
-    %e(i) = error(Nx(i),Ny(i),X,A_ana)
+	X = X(2:end-1,2:end-1);
+	A_ana = AnaSol(Nx(i),Ny(i),f_ana);
+    GSerr(i) = GS_error(Nx(i),Ny(i),X,A_ana);
 end
+GSerrFactor = GSerr(1:end-1)./GSerr(2:end);
 
+f4 = figure('name','Results');
+set(f4, 'Position', [300 280 670 340])
+cnames = {'7', '13', '31', '63'};
+rnames = {' Full-Matrix: Runtime ', 'Storage'};
+FullMatTable = uitable(f4,'Data',[Rtime_Full ; Strg_Full],...
+                'ColumnName',cnames, 'RowName', rnames,...
+                'Position', [10 250 663 75], 'ColumnWidth', {100});
 
-surf(X);
+rnames = {'Sparse-Matrix: Runtime', 'Storage'};			
+SparseMatTable = uitable(f4,'Data',[Rtime_Sparse ; Strg_Sparse],...
+                'ColumnName',cnames, 'RowName', rnames,...
+                'Position', [10 170 663 75], 'ColumnWidth', {100});
 
+rnames = {'Gauss-Seidel: Runtime ', 'Storage'};
+GSMatTable = uitable(f4,'Data',[Rtime_GS ; Strg_GS],...
+                'ColumnName',cnames, 'RowName', rnames,...
+                'Position', [10 90 663 75], 'ColumnWidth', {100});
 
-
+cnames = {'7', '13', '31', '63', '127'};
+rnames = {'  Gauss-Seidel: Error ', 'Error Factor'};
+ErrorTable = uitable(f4,'Data',[GSerr;[0,GSerrFactor]],...
+                'ColumnName',cnames, 'RowName', rnames,...
+                'Position', [10 10 663 75], 'ColumnWidth', {80});		
