@@ -23,7 +23,7 @@ if (Nx_len ~= Ny_len)
 end
 
 an_sol = @(x,y) sin(pi*x)*sin(pi*y);
-func_b = @(x,y) -2*pi^2*sin(pi*x)*sin(pi*y);
+func_pde = @(x,y) -2*pi^2*sin(pi*x)*sin(pi*y);
 
 %% Runtime and storage analysis and plotting
 %runtime result arrays
@@ -37,15 +37,19 @@ figure_sparse = figure('name', 'Direct solver using sparse matrix A');
 figure_gs = figure('name','Gauss-Seidel Method');
 
 for i = 1:Nx_len
+    %generate equation system matrices
     A = gen_matrix(N_x(i),N_y(i));
 
     A_sparse = sparse(A);
 
+    % create solution grid
     xx = 0:1/(1+N_x(i)):1;
     yy = 0:1/(1+N_y(i)):1;
 
-    b = calc_rhs(N_x(i),N_y(i),func_b);
+    %generate right-hand side of PDE (endpoints exclusive)
+    b = calc_rhs(N_x(i),N_y(i),func_pde);
 
+    %use different solvers and measure runtime.
     runtime_direct = tic;
     x_full = A\b;
     runtime_T_direct(1,i) = toc(runtime_direct);
@@ -83,8 +87,10 @@ end
 
 %% Error calculation
 solver = @gauss_seidel
-func_rhs = @(N_xx,N_yy) calc_rhs(N_xx,N_yy,func_b);
+func_rhs = @(N_xx,N_yy) calc_rhs(N_xx,N_yy,func_pde);
 error_res = error_summation(N_x,N_y,an_sol,solver,func_rhs);
+
+% Obtain strings for result tables and print results.
 column_labels =[];
 for i = 1:length(N_x)
     column_labels = [column_labels '(' num2str(N_x(i)) ',' num2str(N_y(i)) ') '];
@@ -113,6 +119,7 @@ else
     disp('Row 1 of each table contains number of grid points,')
     disp('row 2 contains the calculated error vs analytical solution,')
     disp('row 3 contains the factor by which the error is reduced compared')
+    disp('with the previous calculation')
 
     disp(column_labels)
     disp(error_res)   
