@@ -1,26 +1,25 @@
-function [ T_approx,frames] = gauss_seidel( b, N_x, N_y )
-%GAUSS_SEIDEL Summary of this function goes here
-%   Detailed explanation goes here
+function [ T_approx] = gauss_seidel( b, N_x, N_y )
+%GAUSS_SEIDEL approximates the PDE solution using the Gauss-Seidel method
+%   INPUT:
+%           b: array holding the rhs of the PDE
+%           N_x: Array of domain dimension in x direction
+%           N_y: Array of domain dimension in y direction
+%   Output:
+%           T_approx: Array holding the approximated result for each grid
+%           point
 
 h_x = 1/(N_x+1);
 h_y = 1/(N_y+1);
-% N_x;
-% N_y;
-x = 0:h_x:1;
-y = 0:h_y:1;
+
 hx_min2= 1/h_x^2;
 hy_min2= 1/h_y^2;
 doubleneg_h_sum = -2*hx_min2-2*hy_min2;
-
-% [X,Y] = meshgrid(x,y);
 
 T_approx = zeros(N_y+2,N_x+2);
 accuracy_limit = 10^(-4);
 res = accuracy_limit+1;
 
-counter=0;
 while ( res > accuracy_limit)
-    res = 0;
     for i = 2:N_y+1
 %         top_values = T_approx(i+1,:);
 %         bottom_values = T_approx(i-1,:);
@@ -35,16 +34,7 @@ while ( res > accuracy_limit)
             T_approx(i,j) = (T_tmp(j)-T_approx(i,j-1)*hx_min2)/doubleneg_h_sum;
         end
     end
-%     T_approx;
-%     res_tmp = 0;
-    %TODO RESIDUAL CALCULATION
-    %HERE
-    %NEW
-%     counter = 1;
-%     for i = 1:N_x*N_y
-%         res_tmp = b(i) - 
-%     end
-    %OLD
+
 %     residual_left =   T_approx(2:end-1,1:end-2);
 %     residual_right =  T_approx(2:end-1,3:end  );
 %     residual_top =    T_approx(3:end  ,2:end-1);
@@ -69,14 +59,7 @@ while ( res > accuracy_limit)
 %         end
 %         %res = res + (b((j-2)*N_x+i-1) - res_tmp)^2;
 %     end
-        counter=counter+1;
-        %res = sqrt(1/(N_x*N_y)*res_tmp);
-    if (mod(counter,100) == 0)
-%         res_tmp
-        res;
-        %surf(X,Y,T_approx);
-        %drawnow
-    end
+
 end
 
 end

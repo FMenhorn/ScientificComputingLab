@@ -12,8 +12,8 @@ clear all
 %               T(x,y) = sin(pi*x)*sin(pi*y)
 
 
-N_x = [7,15,31,63]
-N_y = [7,15,31,63]
+N_x = [7,15,31]
+N_y = [7,15,31]
 
 Nx_len = length(N_x);
 Ny_len = length(N_y);
@@ -26,11 +26,9 @@ an_sol = @(x,y) sin(pi*x)*sin(pi*y);
 func_pde = @(x,y) -2*pi^2*sin(pi*x)*sin(pi*y);
 
 %% Runtime and storage analysis and plotting
-%runtime result arrays
 runtime_T_direct = nan(1,Nx_len);
 runtime_T_sparse = nan(1,Nx_len);
 runtime_T_gs = nan(1,Nx_len);
-
 
 figure_direct = figure('name', 'Direct solver using full matrix A');
 figure_sparse = figure('name', 'Direct solver using sparse matrix A');
@@ -62,6 +60,7 @@ for i = 1:Nx_len
     x_gs = gauss_seidel(b,N_x(i),N_y(i));
     runtime_T_gs(1,i) = toc(runtime_gs);
     
+    % Plotting
     plot_matrix = zeros(length(xx),length(yy));
     
     figure(figure_direct);
@@ -83,13 +82,26 @@ for i = 1:Nx_len
     gs_contour = subplot(2,Nx_len,i+Nx_len);
     plot_results('Gauss-Seidel',gs_surf,gs_contour,N_x(i),N_y(i),x_gs);
 end
+
+figure(figure_direct);
+suplabel('Contour and Surface plot','y');
+suplabel('Domain discretization (N_x,N_y)','t');
+figure(figure_sparse);
+suplabel('Contour and Surface plot','y');
+suplabel('Domain discretization (N_x,N_y)','t');
+figure(figure_gs);
+suplabel('Contour and Surface plot','y');
+suplabel('Domain discretization (N_x,N_y)','t');
 %%
 
 %% Error calculation
-solver = @gauss_seidel
+solver = @gauss_seidel;
 func_rhs = @(N_xx,N_yy) calc_rhs(N_xx,N_yy,func_pde);
 error_res = error_summation(N_x,N_y,an_sol,solver,func_rhs);
 
+%%
+
+%% Results
 % Obtain strings for result tables and print results.
 column_labels =[];
 for i = 1:length(N_x)

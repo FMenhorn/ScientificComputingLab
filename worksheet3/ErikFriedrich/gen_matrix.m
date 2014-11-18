@@ -1,6 +1,10 @@
 function [ A ] = gen_matrix( N_x, N_y )
-%GEN_MATRIX Summary of this function goes here
-%   Detailed explanation goes here
+%GEN_MATRIX generates the matrix A as described in b)
+%   INPUT:
+%           N_x: Array of domain dimension in x direction
+%           N_y: Array of domain dimension in y direction
+%   Output:
+%           A: matrix A as described in b)
 
 h_x = 1/(N_x+1);
 h_y = 1/(N_y+1);
