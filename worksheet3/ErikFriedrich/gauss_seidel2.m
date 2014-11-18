@@ -1,4 +1,4 @@
-function [ T_approx,frames] = gauss_seidel( b, N_x, N_y )
+function [ T_approx,frames] = gauss_seidel2( b, N_x, N_y )
 %GAUSS_SEIDEL Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -19,16 +19,23 @@ accuracy_limit = 10^(-4);
 res = accuracy_limit+1;
 figure;
 frames = [];
+matrix_small = ...
+    [0,     1/h_y^2,    0; ...
+    1/h_x^2,0,          1/h_x^2; ...
+    0,      1/h_y^2,    0];
+
+matrix_res = matrix_small + [0 0 0; 0 doubneg_h_sum 0; 0 0 0];
+
 
 counter=0;
 while ( res > accuracy_limit)
     res = 0;
     for i = 2:N_x+1
         for j = 2:N_y+1
-            left_value = T_approx(i,j-1)*hx_min2;
-            right_value = T_approx(i,j+1)*hx_min2;
-            top_value = T_approx(i+1,j)*hy_min2;
-            bottom_value = T_approx(i-1,j)*hy_min2;
+            left_value = T_approx(i,j-1)*hy_min2;
+            right_value = T_approx(i,j+1)*hy_min2;
+            top_value = T_approx(i+1,j)*hx_min2;
+            bottom_value = T_approx(i-1,j)*hx_min2;
             T_approx(i,j) = (b((j-2)*N_x+i-1)-left_value-right_value-top_value-bottom_value)/doubneg_h_sum;
         end
     end
@@ -53,13 +60,13 @@ while ( res > accuracy_limit)
         end
         %res = res + (b((j-2)*N_x+i-1) - res_tmp)^2;
     end
-        counter=counter+1;
-        res = sqrt(1/(N_x*N_y)*res_tmp);
+    counter=counter+1;
     if (mod(counter,100) == 0)
         res_tmp
-        surf(X,Y,T_approx);
-        drawnow
     end
+    res = sqrt(1/(N_x*N_y)*res_tmp);
+    surf(X,Y,T_approx);
+    drawnow
 end
 
 end
