@@ -31,6 +31,11 @@ runtime_T_direct = nan(1,Nx_len);
 runtime_T_sparse = nan(1,Nx_len);
 runtime_T_gs = nan(1,Nx_len);
 
+
+figure_direct = figure('name', 'Direct solver using full matrix A');
+figure_sparse = figure('name', 'Direct solver using sparse matrix A');
+figure_gs = figure('name','Gauss-Seidel Method');
+
 for i = 1:Nx_len
     A = gen_matrix(N_x(i),N_y(i));
 
@@ -52,6 +57,27 @@ for i = 1:Nx_len
     runtime_gs = tic;
     x_gs = gauss_seidel(b,N_x(i),N_y(i));
     runtime_T_gs(1,i) = toc(runtime_gs);
+    
+    plot_matrix = zeros(length(xx),length(yy));
+    
+    figure(figure_direct);
+    direct_surf = subplot(2,Nx_len,i);
+    direct_contour = subplot(2,Nx_len,i+Nx_len);
+    x_full_re = reshape(x_full,sqrt(length(x_full)),sqrt(length(x_full)));
+    plot_matrix(2:end-1,2:end-1) = x_full_re;
+    plot_results('Direct-solver',direct_surf,direct_contour,N_x(i),N_y(i),plot_matrix);
+    
+    figure(figure_sparse);
+    sparse_surf = subplot(2,Nx_len,i);
+    sparse_contour = subplot(2,Nx_len,i+Nx_len);
+    x_sparse_re = reshape(x_sparse,sqrt(length(x_sparse)),sqrt(length(x_sparse)));
+    plot_matrix(2:end-1,2:end-1) = x_sparse_re;
+    plot_results('Sparse-solver',sparse_surf,sparse_contour,N_x(i),N_y(i),plot_matrix);
+
+    figure(figure_gs);
+    gs_surf = subplot(2,Nx_len,i);
+    gs_contour = subplot(2,Nx_len,i+Nx_len);
+    plot_results('Gauss-Seidel',gs_surf,gs_contour,N_x(i),N_y(i),x_gs);
 end
 %%
 
@@ -91,23 +117,3 @@ else
     disp(column_labels)
     disp(error_res)   
 end
-
-%%
-%%
-return
-
-%Plotting
-[X,Y] = meshgrid(xx,yy);
-figure;
-plot_matrix = zeros(length(xx),length(yy));
-x_full_re = reshape(x_full,sqrt(length(x_full)),sqrt(length(x_full)));
-plot_matrix(2:end-1,2:end-1) = x_full_re;
-surf(X,Y,plot_matrix);
-
-figure;
-x_sparse_re = reshape(x_sparse,sqrt(length(x_sparse)),sqrt(length(x_sparse)));
-plot_matrix(2:end-1,2:end-1) = x_sparse_re;
-surf(X,Y,plot_matrix);
-
-figure;
-surf(X,Y,x_gs);
