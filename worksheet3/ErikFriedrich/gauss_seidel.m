@@ -17,8 +17,6 @@ doubleneg_h_sum = -2*hx_min2-2*hy_min2;
 T_approx = zeros(N_y+2,N_x+2);
 accuracy_limit = 10^(-4);
 res = accuracy_limit+1;
-figure;
-frames = [];
 
 counter=0;
 while ( res > accuracy_limit)
@@ -75,7 +73,7 @@ while ( res > accuracy_limit)
         %res = sqrt(1/(N_x*N_y)*res_tmp);
     if (mod(counter,100) == 0)
 %         res_tmp
-        res
+        res;
         %surf(X,Y,T_approx);
         %drawnow
     end
