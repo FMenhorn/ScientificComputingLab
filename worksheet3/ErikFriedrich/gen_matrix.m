@@ -2,8 +2,8 @@ function [ A ] = gen_matrix( N_x, N_y )
 %GEN_MATRIX Summary of this function goes here
 %   Detailed explanation goes here
 
-h_x = 1/(N_x+1)
-h_y = 1/(N_y+1)
+h_x = 1/(N_x+1);
+h_y = 1/(N_y+1);
 
 % A = diag(ones(N_x*N_y,1))*(-2/h_x^2-2/h_y^2) ...
 %    + (diag(ones(N_x*N_y-1,1),1) + diag(ones(N_x*N_y-1,1),-1))/h_x^2 ...
