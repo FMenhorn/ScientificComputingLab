@@ -53,13 +53,13 @@ while ( res > accuracy_limit)
         end
         %res = res + (b((j-2)*N_x+i-1) - res_tmp)^2;
     end
-    counter=counter+1;
+        counter=counter+1;
+        res = sqrt(1/(N_x*N_y)*res_tmp);
     if (mod(counter,100) == 0)
         res_tmp
+        surf(X,Y,T_approx);
+        drawnow
     end
-    res = sqrt(1/(N_x*N_y)*res_tmp);
-    surf(X,Y,T_approx);
-    drawnow
 end
 
 end

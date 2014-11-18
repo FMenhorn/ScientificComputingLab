@@ -16,7 +16,7 @@ for i = 1:N_x*N_y
         if i==j
             A(i,j) = -2/h_x^2-2/h_y^2;
         end
-        if (j == i-1 || j == i+1) && ((i-1) ~= 0 || (i+1) ~= N_y) 
+        if ((j == i-1)&&(mod(j,N_y)) || (j == i+1) && mod(i,N_x)) 
             A(i,j) = 1/h_x^2;
         end
         if (j == i-N_x || j == i+N_x) && ((i-N_x) > 0 || (i+N_x) < N_y*N_x)
