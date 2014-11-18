@@ -35,6 +35,33 @@ tic
 x_gs = gauss_seidel(b,N_x,N_y);
 toc
 
+N_x = [7,15,31,63]
+N_y = [7,15,31,63]
+solver = @gauss_seidel
+func_rhs = @(N_xx,N_yy) calc_rhs(N_xx,N_yy,func_b);
+error_res = error_summation(N_x,N_y,an_sol,solver,func_rhs);
+column_string =[];
+for i = 1:length(N_x)
+    column_string = [column_string '(' num2str(N_x(i)) ',' num2str(N_y(i)) ') '];
+end
+if (exist('printmat') == 2)
+%     column_string = [];
+%     for i = 1:length(N_x)
+%         column_string =[column_string '_ '];
+%     end
+    row_names = 'abs_error error_factor';
+    printmat(error_res, 'Results of Gauss-Seidel', row_names , column_string)
+else
+    disp('Here follows the result of the calculations for each method.')
+    disp('Row 1 of each table contains number of grid points,')
+    disp('row 2 contains the calculated error vs analytical solution,')
+    disp('row 3 contains the factor by which the error is reduced compared')
+
+    disp(column_string)
+    disp(error_res)   
+end
+return
+
 %Plotting
 [X,Y] = meshgrid(xx,yy);
 figure;
