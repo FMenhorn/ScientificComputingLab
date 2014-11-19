@@ -11,6 +11,9 @@
 
 %% VARIABLES
 
+clear all;
+close all;
+
 f = @(x,y)(-2*pi^2*sin(pi*x).*sin(pi*y));
 f_ana = @(x,y)(sin(pi*x).*sin(pi*y));
 Nx = [7 15 31 63];
@@ -75,7 +78,8 @@ for n = 1:length(Nx)
 		', Ny = ', num2str(Ny(n))));
 	
 % 	Calculating the storage
-	Strg_Full(n) = numel(A) + numel(X) + numel(b);
+	s_A = whos('A'); s_X = whos('X'); s_b = whos('b');
+	Strg_Full(n) = s_A.bytes + s_X.bytes + s_b.bytes;
 end
 
 
@@ -102,7 +106,8 @@ for n = 1:length(Nx)
 	X = padarray(X,[1,1]);
  		
 % 	Calculating the storage
-	Strg_Sparse(n) = numel(A_sparse) + numel(X) + numel(b);
+	s_A_sparse = whos('A_sparse'); s_X = whos('X'); s_b = whos('b');
+	Strg_Sparse(n) = s_A_sparse.bytes + s_X.bytes + s_b.bytes;
 	
 % 	Coloured surface plot of Temperatue
 	subplot(2,4,n)
@@ -142,7 +147,8 @@ for n = 1:length(Nx)
 	Rtime_GS(n) = toc;
  		
 % 	Calculating the storage
-	Strg_GS(n) = numel(A_sparse) + numel(X) + numel(b);
+	s_X = whos('X'); s_b = whos('b');
+	Strg_GS(n) = s_X.bytes + s_b.bytes;
 	
 % 	Coloured surface plot of Temperatue
 	subplot(2,4,n)
@@ -170,6 +176,7 @@ end
 % Runtime and storage requirements already calculated in the previous
 % section
 
+% Calculating error in Gauss Seidel
 Nx = [7 15 3 6 12];
 Ny = Nx;
 len = length(Nx);
@@ -184,6 +191,7 @@ for i=1:len
 end
 GSerrFactor = GSerr(1:end-1)./GSerr(2:end);
 
+% Plotting results in a table
 f4 = figure('name','Results');
 set(f4, 'Position', [300 280 670 340])
 cnames = {'7', '13', '31', '63'};
