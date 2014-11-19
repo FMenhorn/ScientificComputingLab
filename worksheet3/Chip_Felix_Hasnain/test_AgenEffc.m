@@ -11,7 +11,7 @@ for i = startVal:endVal
 	Time_Agen1(i-startVal+1) = toc;
 	
 	tic;
-	AgenNew(i,i);
+	Agen2(i,i);
 	Time_Agen2(i-startVal+1) = toc;
 	
 	tic;

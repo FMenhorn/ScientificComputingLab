@@ -1,4 +1,4 @@
-function [ A ] = AgenNew( Nx,Ny )
+function [ A ] = Agen2( Nx,Ny )
 %UNTITLED10 Summary of this function goes here
 %   Detailed explanation goes here
 tic;
