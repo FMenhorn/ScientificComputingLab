@@ -195,17 +195,17 @@ GSerrFactor = GSerr(1:end-1)./GSerr(2:end);
 f4 = figure('name','Results');
 set(f4, 'Position', [300 280 670 340])
 cnames = {'7', '13', '31', '63'};
-rnames = {' Full-Matrix: Runtime ', 'Storage'};
+rnames = {' Full-Matrix: Runtime ', 'Storage (Bytes)'};
 FullMatTable = uitable(f4,'Data',[Rtime_Full ; Strg_Full],...
                 'ColumnName',cnames, 'RowName', rnames,...
                 'Position', [10 250 663 75], 'ColumnWidth', {100});
 
-rnames = {'Sparse-Matrix: Runtime', 'Storage'};			
+rnames = {'Sparse-Matrix: Runtime', 'Storage (Bytes)'};			
 SparseMatTable = uitable(f4,'Data',[Rtime_Sparse ; Strg_Sparse],...
                 'ColumnName',cnames, 'RowName', rnames,...
                 'Position', [10 170 663 75], 'ColumnWidth', {100});
 
-rnames = {'Gauss-Seidel: Runtime ', 'Storage'};
+rnames = {'Gauss-Seidel: Runtime ', 'Storage (Bytes)'};
 GSMatTable = uitable(f4,'Data',[Rtime_GS ; Strg_GS],...
                 'ColumnName',cnames, 'RowName', rnames,...
                 'Position', [10 90 663 75], 'ColumnWidth', {100});
