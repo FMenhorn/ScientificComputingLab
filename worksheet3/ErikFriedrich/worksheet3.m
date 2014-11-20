@@ -60,7 +60,7 @@ for i = 1:Nx_len
     x_gs = gauss_seidel(b,N_x(i),N_y(i));
     runtime_T_gs(1,i) = toc(runtime_gs);
     
-    % Plotting
+    % Plotting in a subplot grid for each method
     plot_matrix = zeros(length(xx),length(yy));
     
     figure(figure_direct);
@@ -83,15 +83,16 @@ for i = 1:Nx_len
     plot_results('Gauss-Seidel',gs_surf,gs_contour,N_x(i),N_y(i),x_gs);
 end
 
+% using suplabel for labelling of subplots, courtesy of Ben Barrowes
 figure(figure_direct);
 suplabel('Contour and Surface plot','y');
-suplabel('Domain discretization (N_x,N_y)','t');
+suplabel('Direct solver using full matrix','t');
 figure(figure_sparse);
 suplabel('Contour and Surface plot','y');
-suplabel('Domain discretization (N_x,N_y)','t');
+suplabel('Direct solver using sparse matrix','t');
 figure(figure_gs);
 suplabel('Contour and Surface plot','y');
-suplabel('Domain discretization (N_x,N_y)','t');
+suplabel('Custom Gauss-Seidel solver','t');
 %%
 
 %% Error calculation
