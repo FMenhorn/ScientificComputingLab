@@ -181,7 +181,6 @@ Nx = [7 15 3 6 12];
 Ny = Nx;
 len = length(Nx);
 e = zeros(1,len);
-
 GSerr = zeros(1,len);
 for i=1:len
     X = GaussSeidel(Nx(i),Ny(i),RHS(Nx(i),Ny(i),f));
@@ -191,27 +190,37 @@ for i=1:len
 end
 GSerrFactor = GSerr(1:end-1)./GSerr(2:end);
 
+% Changing the units of runtime from seconds to mili-seconds
+Rtime_Full = Rtime_Full*1000;
+Rtime_GS = Rtime_Full*1000;
+Rtime_Sparse = Rtime_Full*1000;
+
+% Converting the storage in kilobytes and rounding off
+Strg_Full = round(Strg_Full./1024);
+Strg_GS = round(Strg_GS./1024);
+Strg_Sparse = round(Strg_Sparse./1024);
+
 % Plotting results in a table
 f4 = figure('name','Results');
-set(f4, 'Position', [300 280 670 340])
+set(f4, 'Position', [300 280 690 340])
 cnames = {'7', '13', '31', '63'};
-rnames = {' Full-Matrix: Runtime ', 'Storage (Bytes)'};
+rnames = {' Full-Matrix: Runtime(ms) ', 'Storage (kBs)'};
 FullMatTable = uitable(f4,'Data',[Rtime_Full ; Strg_Full],...
                 'ColumnName',cnames, 'RowName', rnames,...
-                'Position', [10 250 663 75], 'ColumnWidth', {100});
+                'Position', [10 250 680 75], 'ColumnWidth', {95});
 
-rnames = {'Sparse-Matrix: Runtime', 'Storage (Bytes)'};			
+rnames = {'Sparse-Matrix: Runtime(ms)', 'Storage (kBs)'};			
 SparseMatTable = uitable(f4,'Data',[Rtime_Sparse ; Strg_Sparse],...
                 'ColumnName',cnames, 'RowName', rnames,...
-                'Position', [10 170 663 75], 'ColumnWidth', {100});
+                'Position', [10 170 680 75], 'ColumnWidth', {95});
 
-rnames = {'Gauss-Seidel: Runtime ', 'Storage (Bytes)'};
+rnames = {'Gauss-Seidel: Runtime(ms) ', 'Storage (kBs)'};
 GSMatTable = uitable(f4,'Data',[Rtime_GS ; Strg_GS],...
                 'ColumnName',cnames, 'RowName', rnames,...
-                'Position', [10 90 663 75], 'ColumnWidth', {100});
+                'Position', [10 90 680 75], 'ColumnWidth', {95});
 
 cnames = {'7', '13', '31', '63', '127'};
-rnames = {'  Gauss-Seidel: Error ', 'Error Factor'};
+rnames = {'    Gauss-Seidel: Error   ', 'Error Factor'};
 ErrorTable = uitable(f4,'Data',[GSerr;[0,GSerrFactor]],...
                 'ColumnName',cnames, 'RowName', rnames,...
-                'Position', [10 10 663 75], 'ColumnWidth', {80});		
+                'Position', [10 10 680 75], 'ColumnWidth', {76});		
