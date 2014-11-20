@@ -62,9 +62,9 @@ for i = 1:Nx_len
     rtstorage_T_gs(1,i) = toc(runtime_gs);
     
     %save the storage used to the rtstorage array
-    rtstorage_T_direct(2,i) = get_storage(A);
-    rtstorage_T_sparse(2,i) = get_storage(A_sparse);
-    rtstorage_T_gs(2,i) =   storage_gs;
+    rtstorage_T_direct(2,i) = get_storage(A)/1024;
+    rtstorage_T_sparse(2,i) = get_storage(A_sparse)/1024;
+    rtstorage_T_gs(2,i) =   storage_gs/1024;
     
     % Plotting in a subplot grid for each method
     plot_matrix = zeros(length(xx),length(yy));
@@ -115,7 +115,7 @@ for i = 1:length(N_x)
     column_labels = [column_labels '(' num2str(N_x(i)) ',' num2str(N_y(i)) ') '];
 end
 if (exist('printmat') == 2)
-    row_labels = 'runtime(s) storage(bytes)';
+    row_labels = 'runtime(s) storage(kB)';
     printmat(rtstorage_T_direct, 'Runtime and Storage for direct solver', row_labels,column_labels);
     printmat(rtstorage_T_sparse, 'Runtime and Storage for direct sparse solver', row_labels,column_labels);
     printmat(rtstorage_T_gs, 'Runtime and Storage for Gauss-Seidel solver', row_labels,column_labels);
@@ -124,16 +124,19 @@ if (exist('printmat') == 2)
 else
     disp('Here follows the result of the Runtime calculation.')
     disp('Row 1 of each table contains the runtime in seconds.')
-    disp('Row 2 of each table contains the storage needed in bytes.')
+    disp('Row 2 of each table contains the storage needed in kilobytes.')
     disp('Runtime and Storage for direct solver:')
     disp('columns_labels')
-    disp(rtstorage_T_direct);
+    disp(rtstorage_T_direct(1,:))
+    disp(rtstorage_T_direct(2,:))
     disp('Runtime and Storage for direct sparse solver:')
     disp('column_labels')
-    disp(rtstorage_T_sparse)
+    disp(rtstorage_T_sparse(1,:))
+    disp(rtstorage_T_sparse(2,:))
     disp('Runtime and Storage for Gauss-Seidel solver:')
     disp('column_labels')
-    disp(rtstorage_T_gs)
+    disp(rtstorage_T_gs(1,:))
+    disp(rtstorage_T_gs(2,:))
     
     disp('Here follows the result of the Error calculation')
     disp('Row 1 of each table contains number of grid points,')
