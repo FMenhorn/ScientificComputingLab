@@ -126,7 +126,7 @@ else
     disp('Row 1 of each table contains the runtime in seconds.')
     disp('Row 2 of each table contains the storage needed in kilobytes.')
     disp('Runtime and Storage for direct solver:')
-    disp(columns_labels)
+    disp(column_labels)
     disp(rtstorage_T_direct(1,:))
     disp(rtstorage_T_direct(2,:))
     disp('Runtime and Storage for direct sparse solver:')
