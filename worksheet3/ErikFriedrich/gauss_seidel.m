@@ -1,4 +1,4 @@
-function [ T_approx] = gauss_seidel( b, N_x, N_y )
+function [ T_approx,storage] = gauss_seidel( b, N_x, N_y, accuracy_limit)
 %GAUSS_SEIDEL approximates the PDE solution using the Gauss-Seidel method
 %   INPUT:
 %           b: array holding the rhs of the PDE
@@ -12,18 +12,18 @@ function [ T_approx] = gauss_seidel( b, N_x, N_y )
 % explicit summing of each term in for-loops due to MatLab's optimisation
 % procedures for vectors and matrices, but requires some temporary storage.
 
-h_x = 1/(N_x+1);
-h_y = 1/(N_y+1);
+% h_x = 1/(N_x+1);
+% h_y = 1/(N_y+1);
 
 %precalculating for efficiency.
-hx_min2= 1/h_x^2;
-hy_min2= 1/h_y^2;
+hx_min2= (N_x+1)^2;
+hy_min2= (N_y+1)^2;
 doubleneg_h_sum = -2*hx_min2-2*hy_min2;
 
 %using initial guess 0 for all entries in the solution matrix, and setting
 %the boundary values (the outer values of the matrix) to 0. 
 T_approx = zeros(N_y+2,N_x+2);
-accuracy_limit = 10^(-4);
+%accuracy_limit = 10^(-4);
 res = accuracy_limit+1;
 
 %loop until the residual is small enough.
@@ -64,5 +64,15 @@ while ( res > accuracy_limit)
     res= sqrt(1/(N_x*N_y))*norm(b-residual_matrix(:));
 end
 
+%storage calculation
+storage = 0;
+storage = storage + get_storage(hx_min2);
+storage = storage + get_storage(hy_min2);
+storage = storage + get_storage(doubleneg_h_sum);
+storage = storage + get_storage(T_approx);
+storage = storage + get_storage(res);
+storage = storage + get_storage(T_tmp);
+storage = storage + get_storage(residual_matrix);
+storage = storage + get_storage(storage);
 end
 

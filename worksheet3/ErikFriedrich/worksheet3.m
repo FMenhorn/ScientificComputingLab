@@ -14,6 +14,7 @@ clear all
 
 N_x = [7,15,31]
 N_y = [7,15,31]
+gs_accuracy_limit = 1e-4;
 
 Nx_len = length(N_x);
 Ny_len = length(N_y);
@@ -57,7 +58,7 @@ for i = 1:Nx_len
     rtstorage_T_sparse(1,i) = toc(runtime_sparse);
     
     runtime_gs = tic;
-    [x_gs, storage_gs] = gauss_seidel(b,N_x(i),N_y(i));
+    [x_gs, storage_gs] = gauss_seidel(b,N_x(i),N_y(i),gs_accuracy_limit);
     rtstorage_T_gs(1,i) = toc(runtime_gs);
     
     %save the storage used to the rtstorage array
@@ -101,7 +102,7 @@ suplabel('Custom Gauss-Seidel solver','t');
 %%
 
 %% Error calculation
-solver = @gauss_seidel;
+solver = @(bb, N_xx, N_yy) gauss_seidel(bb, N_xx, N_yy, gs_accuracy_limit);
 func_rhs = @(N_xx,N_yy) calc_rhs(N_xx,N_yy,func_pde);
 error_res = error_summation(N_x,N_y,an_sol,solver,func_rhs);
 
