@@ -26,9 +26,9 @@ an_sol = @(x,y) sin(pi*x)*sin(pi*y);
 func_pde = @(x,y) -2*pi^2*sin(pi*x)*sin(pi*y);
 
 %% Runtime and storage analysis and plotting
-runtime_T_direct = nan(1,Nx_len);
-runtime_T_sparse = nan(1,Nx_len);
-runtime_T_gs = nan(1,Nx_len);
+rtstorage_T_direct = nan(2,Nx_len);
+rtstorage_T_sparse = nan(2,Nx_len);
+rtstorage_T_gs = nan(2,Nx_len);
 
 figure_direct = figure('name', 'Direct solver using full matrix A');
 figure_sparse = figure('name', 'Direct solver using sparse matrix A');
@@ -50,15 +50,20 @@ for i = 1:Nx_len
     %use different solvers and measure runtime.
     runtime_direct = tic;
     x_full = A\b;
-    runtime_T_direct(1,i) = toc(runtime_direct);
+    rtstorage_T_direct(1,i) = toc(runtime_direct);
     
     runtime_sparse = tic;
     x_sparse = A_sparse\b;
-    runtime_T_sparse(1,i) = toc(runtime_sparse);
+    rtstorage_T_sparse(1,i) = toc(runtime_sparse);
     
     runtime_gs = tic;
-    x_gs = gauss_seidel(b,N_x(i),N_y(i));
-    runtime_T_gs(1,i) = toc(runtime_gs);
+    [x_gs, storage_gs] = gauss_seidel(b,N_x(i),N_y(i));
+    rtstorage_T_gs(1,i) = toc(runtime_gs);
+    
+    %save the storage used to the rtstorage array
+    rtstorage_T_direct(2,i) = get_storage(A);
+    rtstorage_T_sparse(2,i) = get_storage(A_sparse);
+    rtstorage_T_gs(2,i) =   storage_gs;
     
     % Plotting in a subplot grid for each method
     plot_matrix = zeros(length(xx),length(yy));
@@ -109,24 +114,25 @@ for i = 1:length(N_x)
     column_labels = [column_labels '(' num2str(N_x(i)) ',' num2str(N_y(i)) ') '];
 end
 if (exist('printmat') == 2)
-    row_labels = 'runtime in s';
-    printmat(runtime_T_direct, 'Runtime for direct solver', row_labels,column_labels);
-    printmat(runtime_T_sparse, 'Runtime for direct sparse solver', row_labels,column_labels);
-    printmat(runtime_T_gs, 'Runtime for Gauss-Seidel solver', row_labels,column_labels);
+    row_labels = 'runtime(s) storage(bytes)';
+    printmat(rtstorage_T_direct, 'Runtime and Storage for direct solver', row_labels,column_labels);
+    printmat(rtstorage_T_sparse, 'Runtime and Storage for direct sparse solver', row_labels,column_labels);
+    printmat(rtstorage_T_gs, 'Runtime and Storage for Gauss-Seidel solver', row_labels,column_labels);
     row_labels = 'abs_error error_factor';
     printmat(error_res, 'Results of Gauss-Seidel', row_labels , column_labels)
 else
-    disp('Here follows the result of the Runtime calculation')
-    disp('Row 1 of each table contains the runtime.')
-    disp('Runtime for direct solver:')
+    disp('Here follows the result of the Runtime calculation.')
+    disp('Row 1 of each table contains the runtime in seconds.')
+    disp('Row 2 of each table contains the storage needed in bytes.')
+    disp('Runtime and Storage for direct solver:')
     disp('columns_labels')
-    disp(runtime_T_direct);
-    disp('Runtime for direct sparse solver:')
+    disp(rtstorage_T_direct);
+    disp('Runtime and Storage for direct sparse solver:')
     disp('column_labels')
-    disp(runtime_T_sparse)
-    disp('Runtime for Gauss-Seidel solver:')
+    disp(rtstorage_T_sparse)
+    disp('Runtime and Storage for Gauss-Seidel solver:')
     disp('column_labels')
-    disp(runtime_T_gs)
+    disp(rtstorage_T_gs)
     
     disp('Here follows the result of the Error calculation')
     disp('Row 1 of each table contains number of grid points,')
