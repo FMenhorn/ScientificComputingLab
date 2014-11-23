@@ -1,10 +1,19 @@
 function [ A ] = Agen( Nx, Ny )
 %AGEN3 
 %  This function will generate a second degree center step finite
-%  difference transform matrix based on the dimensions of Nx x Ny
+%  difference transform matrix based on the dimensions of Nx x Ny.
 
 % for T mxn, N = m*n
 N = Nx*Ny;
+
+% The linear system of equations subject to this task looks as follows:
+
+% (1/hx^2)*T_i-1,j + (1/hy^2)*T_i,j-1 + (1/hx^2)*T_i+1,j + (1/hy^2)*T_i,j+1
+% - 2((hy^2+hx^2)/(hx^2*hy^2)) = B
+
+% By expressing 1/hx^2 and 1/hy^2 in terms of the number of unknowns Nx and
+% Ny and substitung them by a and c, we obtain:
+
 a = (Nx+1)^2;
 c = (Ny+1)^2;
 b = -2*(a + c);
