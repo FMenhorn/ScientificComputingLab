@@ -21,16 +21,22 @@ Ny = [7 15 31 63];
 
 % Time requirements for different grid sizes with full matrix
 Rtime_Full = zeros(1,length(Nx));
-% Storage requirement for different grid sizes with full matrix
-Strg_Full = zeros(1,length(Nx));
+% Storage requirement in Bytes for different grid sizes with full matrix
+Strg_Full_Bytes = zeros(1,length(Nx));
+% Storage requirement in No of elements for different grid sizes with full matrix
+Strg_Full_Elements = zeros(1,length(Nx));
 % Time requirements for different grid sizes with sparse matrix
 Rtime_Sparse = zeros(1,length(Nx));
-% Storage requirement for different grid sizes with sparse matrix
-Strg_Sparse = zeros(1,length(Nx));
+% Storage requirement in Bytes for different grid sizes with sparse matrix
+Strg_Sparse_Bytes = zeros(1,length(Nx));
+% Storage requirement in No of elements for different grid sizes with sparse matrix
+Strg_Sparse_Elements = zeros(1,length(Nx));
 % Time requirements for different grid sizes for Gauss Siedel method
 Rtime_GS = zeros(1,length(Nx));
-% Storage requirement for different grid sizes for Gauss Siedel method
-Strg_GS = zeros(1,length(Nx));
+% Storage requirement in Bytes for different grid sizes for Gauss Siedel method
+Strg_GS_Bytes = zeros(1,length(Nx));
+% Storage requirement in number of elements for different grid sizes for Gauss Siedel method
+Strg_GS_Elements = zeros(1,length(Nx));
 
 %% Task a), b) and c)
 
@@ -79,7 +85,8 @@ for n = 1:length(Nx)
 	
 % 	Calculating the storage
 	s_A = whos('A'); s_X = whos('X'); s_b = whos('b');
-	Strg_Full(n) = s_A.bytes + s_X.bytes + s_b.bytes;
+	Strg_Full_Bytes(n) = s_A.bytes + s_X.bytes + s_b.bytes;
+	Strg_Full_Elements(n) = numel(A) + numel(X) + numel(b);
 end
 
 
@@ -107,7 +114,8 @@ for n = 1:length(Nx)
  		
 % 	Calculating the storage
 	s_A_sparse = whos('A_sparse'); s_X = whos('X'); s_b = whos('b');
-	Strg_Sparse(n) = s_A_sparse.bytes + s_X.bytes + s_b.bytes;
+	Strg_Sparse_Bytes(n) = s_A_sparse.bytes + s_X.bytes + s_b.bytes;
+	Strg_Sparse_Elements(n) = CountNZsInA(Nx(n),Ny(n)) + numel(X) + numel(b);
 	
 % 	Coloured surface plot of Temperatue
 	subplot(2,4,n)
@@ -148,7 +156,8 @@ for n = 1:length(Nx)
  		
 % 	Calculating the storage
 	s_X = whos('X'); s_b = whos('b');
-	Strg_GS(n) = s_X.bytes + s_b.bytes;
+	Strg_GS_Bytes(n) = s_X.bytes + s_b.bytes;
+	Strg_GS_Elements(n) = numel(X) + numel(b);
 	
 % 	Coloured surface plot of Temperatue
 	subplot(2,4,n)
@@ -192,35 +201,59 @@ GSerrFactor = GSerr(1:end-1)./GSerr(2:end);
 
 % Changing the units of runtime from seconds to mili-seconds
 Rtime_Full = Rtime_Full*1000;
-Rtime_GS = Rtime_Full*1000;
-Rtime_Sparse = Rtime_Full*1000;
+Rtime_GS = Rtime_GS*1000;
+Rtime_Sparse = Rtime_Sparse*1000;
 
 % Converting the storage in kilobytes and rounding off
-Strg_Full = round(Strg_Full./1024);
-Strg_GS = round(Strg_GS./1024);
-Strg_Sparse = round(Strg_Sparse./1024);
+Strg_Full_Bytes = round(Strg_Full_Bytes./1024);
+Strg_GS_Bytes = round(Strg_GS_Bytes./1024);
+Strg_Sparse_Bytes = round(Strg_Sparse_Bytes./1024);
 
-% Plotting results in a table
+
+% POTTING RESULTS IN TABLE
+
+% Maximum number of characters in the column  string
+maxCharsInCol1 = 26;			
+% length of Column 1 in pixels
+LengthOfCol1 = 40 + maxCharsInCol1*10;	
+rowLen = 680;		%Length of row in pixels
+
+numOfRows = [3,4,4,4];				% Number of Rows in each table
+tableHeight = 25*numOfRows;
+numOfTables = 4;
+% Constructing table height vector
+tblHigtVec(1)= 10;
+tblHigtVec(2)= 5 + tblHigtVec(1)+tableHeight(1);
+tblHigtVec(3)= 5 + tblHigtVec(2)+tableHeight(2);
+tblHigtVec(4)= 5 + tblHigtVec(3)+tableHeight(3);
+tblHigtVec(5)= 10 + tblHigtVec(4)+tableHeight(4);
+
+% Figure of suitable size
 f4 = figure('name','Results');
-set(f4, 'Position', [300 280 690 340])
+set(f4, 'Position', [300 280 (rowLen+20) tblHigtVec(numOfTables+1)])
+
+% Table for results of Full Matrix
 cnames = {'7', '13', '31', '63'};
-rnames = {' Full-Matrix: Runtime(ms) ', 'Storage (kBs)'};
-FullMatTable = uitable(f4,'Data',[Rtime_Full ; Strg_Full],...
+rnames = {' Full-Matrix: Runtime(ms) ', 'Storage(kBs)','Storage(No. of elements)'};
+FullMatTable = uitable(f4,'Data',[Rtime_Full ; Strg_Full_Bytes; Strg_Full_Elements],...
                 'ColumnName',cnames, 'RowName', rnames,...
-                'Position', [10 250 680 75], 'ColumnWidth', {95});
+                'Position', [10 tblHigtVec(4) rowLen tableHeight(4)], 'ColumnWidth', {95});
 
-rnames = {'Sparse-Matrix: Runtime(ms)', 'Storage (kBs)'};			
-SparseMatTable = uitable(f4,'Data',[Rtime_Sparse ; Strg_Sparse],...
+% Table for results of Sparse Matrix
+rnames = {'Sparse-Matrix: Runtime(ms)', 'Storage (kBs)','Storage(No. of elements)'};			
+SparseMatTable = uitable(f4,'Data',[Rtime_Sparse ; Strg_Sparse_Bytes; Strg_Sparse_Elements],...
                 'ColumnName',cnames, 'RowName', rnames,...
-                'Position', [10 170 680 75], 'ColumnWidth', {95});
+                'Position', [10 tblHigtVec(3) rowLen tableHeight(3)], 'ColumnWidth', {95});
 
-rnames = {'Gauss-Seidel: Runtime(ms) ', 'Storage (kBs)'};
-GSMatTable = uitable(f4,'Data',[Rtime_GS ; Strg_GS],...
+% Table for results of Gauss Seidel
+rnames = {'Gauss-Seidel: Runtime(ms) ', 'Storage (kBs)','Storage(No. of elements)'};
+GSMatTable = uitable(f4,'Data',[Rtime_GS ; Strg_GS_Bytes; Strg_GS_Elements],...
                 'ColumnName',cnames, 'RowName', rnames,...
-                'Position', [10 90 680 75], 'ColumnWidth', {95});
+                'Position', [10 tblHigtVec(2) rowLen tableHeight(2)], 'ColumnWidth', {95});
 
+% Table for error factor of Gauss Seidel
 cnames = {'7', '13', '31', '63', '127'};
 rnames = {'    Gauss-Seidel: Error   ', 'Error Factor'};
 ErrorTable = uitable(f4,'Data',[GSerr;[0,GSerrFactor]],...
                 'ColumnName',cnames, 'RowName', rnames,...
-                'Position', [10 10 680 75], 'ColumnWidth', {76});		
+                'Position', [10 tblHigtVec(1) rowLen tableHeight(1)], 'ColumnWidth', {76});		
