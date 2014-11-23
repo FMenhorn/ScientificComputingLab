@@ -16,6 +16,7 @@ close all;
 
 f = @(x,y)(-2*pi^2*sin(pi*x).*sin(pi*y));
 f_ana = @(x,y)(sin(pi*x).*sin(pi*y));
+
 Nx = [15 31 63 127 255];
 Ny = [15 31 63 127 255];
 
