@@ -17,8 +17,8 @@ close all;
 f = @(x,y)(-2*pi^2*sin(pi*x).*sin(pi*y));
 f_ana = @(x,y)(sin(pi*x).*sin(pi*y));
 
-Nx = [15 31 63 127 255];
-Ny = [15 31 63 127 255];
+Nx = [15 31 63 100];
+Ny = [15 31 63 100];
 
 % Time requirements for different grid sizes with full matrix
 Rtime_Full = zeros(1,length(Nx));
