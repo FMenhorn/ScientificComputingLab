@@ -52,10 +52,10 @@ set(gcf, 'Position', get(0,'Screensize'));
 for n = 1:length(Nx)
 	hx = 1/(Nx(n) + 1);
 	hy = 1/(Ny(n) + 1);
-	A = Agen(Nx(n),Ny(n));
 	b = RHS(Nx(n),Ny(n),f);
 	b = b(:);
 	tic;
+	A = Agen(Nx(n),Ny(n));
 	x = linsolve(A,b);
 % 	Calculating the runtime
 	Rtime_Full(n) = toc;
@@ -91,7 +91,6 @@ end
 
 
 % 2) DIRECT SOLUTION WITH SPARSE MATRIX
-tic;
 
 %subplot(2,4)
 figure('name','Direct Solution with Sparse Matrix');
@@ -100,10 +99,10 @@ set(gcf, 'Position', get(0,'Screensize'));
 for n = 1:length(Nx)
 	hx = 1/(Nx(n) + 1);
 	hy = 1/(Ny(n) + 1);
-	A = Agen(Nx(n),Ny(n));
 	b = RHS(Nx(n),Ny(n),f);
 	b = b(:);
 	tic;
+	A = Agen(Nx(n),Ny(n));
 	A_sparse = sparse(A);
 	x = A_sparse\b;
 % 	Calculating the runtime
