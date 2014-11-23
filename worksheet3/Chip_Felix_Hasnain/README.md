@@ -10,18 +10,7 @@
 ## TODO's
 
 
-*	DONE ~copy worksheet to folder~
-*	DONE ~Hasnain and Chip- impliment part~ 
-*	DONE ~Felix- impliment the Gaus Seidel Solver~
-*	DONE ~Felix- impliment the Matlab solver for d1)~
-*	Write the outputs in a better format (with exponents for clear visualization)
-*	Code review and refine the commenting, variable names and syntax if possible.
-*	Check whether the storage is calculated correctly or not. Most of the values look same in table
-*	Confirm the extent of time estimates (time for A and B generation to be included or not). Correct if needed
-*	Confirm the extent of storage, which variables should be considered..
-*	Compare the results with another group.
-*	Fill the worksheet.
-*	Upload project, discuss preferences for timeslot and choose time slot.
+*	Fill the worksheet or print out result table for exam.
 
 ## Theory Discussion
 ### Theory links:
@@ -37,5 +26,10 @@
 
 ###Open questions:
  
-*	What is internally happening with solving opposed to linsolve? It is even faster!!! Why???
+*	What is internally happening with solving with mldivide opposed to linsolve? It is even faster!!! Why???
+        The backslash operator (mldivide) checks for matrix properties in order to apply the correct procedure. linsolve assumes sth., if no opts are specified. That's why wrong results may occur when using linsolve and not knowing what properties the respective matrix has. In order to be able to compare full matrix and sparse matrix calculations, mldivide is used in both cases.
 *	So, why is Sparse so incredibly fast and for that, why not always just using sparse matrices intead of iterative scheme?
+	As can be obtained from the result table, sparse matrices soon need more storage as indices for non-zero elements have to be stored as well.
+*	Discuss the questions at the end of WS3.
+*	Determine runtime and storage order.
+*	What is the relation between R and e? e gets smaller with increasing Nx, but Rmin remains fixed (of course).
