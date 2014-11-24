@@ -12,21 +12,23 @@ clear all
 %               T(x,y) = sin(pi*x)*sin(pi*y)
 
 
-N_x = [7,15,31]
-N_y = [7,15,31]
+an_sol = @(x,y) sin(pi*x)*sin(pi*y);
+func_pde = @(x,y) -2*pi^2*sin(pi*x)*sin(pi*y);
+
+%% Runtime and storage analysis and plotting
+disp('###Runtime and Storage Analysis###')
+disp('Matrix sizes')
+N_x = [7,15,31,63]
+N_y = [7,15,31,63]
 gs_accuracy_limit = 1e-4;
 
 Nx_len = length(N_x);
 Ny_len = length(N_y);
 
 if (Nx_len ~= Ny_len)
-    error('Worksheet3: Length of N_x array unequal to N_y array. There is something wrong!')
+    error('Worksheet3 RuntimeAndStorage: Length of N_x array unequal to N_y array. There is something wrong!')
 end
 
-an_sol = @(x,y) sin(pi*x)*sin(pi*y);
-func_pde = @(x,y) -2*pi^2*sin(pi*x)*sin(pi*y);
-
-%% Runtime and storage analysis and plotting
 rtstorage_T_direct = nan(2,Nx_len);
 rtstorage_T_sparse = nan(2,Nx_len);
 rtstorage_T_gs = nan(2,Nx_len);
@@ -102,6 +104,18 @@ suplabel('Custom Gauss-Seidel solver','t');
 %%
 
 %% Error calculation
+disp('###Error calculation###')
+disp('Matrix sizes')
+N_x = [7,15,31,63,127]
+N_y = [7,15,31,63,127]
+
+Nx_len = length(N_x);
+Ny_len = length(N_y);
+
+if (Nx_len ~= Ny_len)
+    error('Worksheet3 ErrorCalculation: Length of N_x array unequal to N_y array. There is something wrong!')
+end
+
 solver = @(bb, N_xx, N_yy) gauss_seidel(bb, N_xx, N_yy, gs_accuracy_limit);
 func_rhs = @(N_xx,N_yy) calc_rhs(N_xx,N_yy,func_pde);
 error_res = error_summation(N_x,N_y,an_sol,solver,func_rhs);
