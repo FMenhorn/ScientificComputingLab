@@ -20,6 +20,10 @@ disp('###Runtime and Storage Analysis###')
 disp('Matrix sizes')
 N_x = [7,15,31,63]
 N_y = [7,15,31,63]
+
+% Get labels later used for plotting
+column_labels_runtime = column_labels(N_x,N_y);
+
 gs_accuracy_limit = 1e-4;
 
 Nx_len = length(N_x);
@@ -109,6 +113,9 @@ disp('Matrix sizes')
 N_x = [7,15,31,63,127]
 N_y = [7,15,31,63,127]
 
+% Get labels later used for plotting
+column_labels_error = column_labels(N_x,N_y);
+
 Nx_len = length(N_x);
 Ny_len = length(N_y);
 
@@ -123,32 +130,27 @@ error_res = error_summation(N_x,N_y,an_sol,solver,func_rhs);
 %%
 
 %% Results
-% Obtain strings for result tables and print results.
-column_labels =[];
-for i = 1:length(N_x)
-    column_labels = [column_labels '(' num2str(N_x(i)) ',' num2str(N_y(i)) ') '];
-end
 if (exist('printmat') == 2)
     row_labels = 'runtime(s) storage(kB)';
-    printmat(rtstorage_T_direct, 'Runtime and Storage for direct solver', row_labels,column_labels);
-    printmat(rtstorage_T_sparse, 'Runtime and Storage for direct sparse solver', row_labels,column_labels);
-    printmat(rtstorage_T_gs, 'Runtime and Storage for Gauss-Seidel solver', row_labels,column_labels);
+    printmat(rtstorage_T_direct, 'Runtime and Storage for direct solver', row_labels,column_labels_runtime);
+    printmat(rtstorage_T_sparse, 'Runtime and Storage for direct sparse solver', row_labels,column_labels_runtime);
+    printmat(rtstorage_T_gs, 'Runtime and Storage for Gauss-Seidel solver', row_labels,column_labels_runtime);
     row_labels = 'abs_error error_factor';
-    printmat(error_res, 'Results of Gauss-Seidel', row_labels , column_labels)
+    printmat(error_res, 'Results of Gauss-Seidel', row_labels , column_labels_error)
 else
     disp('Here follows the result of the Runtime calculation.')
     disp('Row 1 of each table contains the runtime in seconds.')
     disp('Row 2 of each table contains the storage needed in kilobytes.')
     disp('Runtime and Storage for direct solver:')
-    disp(column_labels)
+    disp(column_labels_runtime)
     disp(rtstorage_T_direct(1,:))
     disp(rtstorage_T_direct(2,:))
     disp('Runtime and Storage for direct sparse solver:')
-    disp(column_labels)
+    disp(column_labels_runtime)
     disp(rtstorage_T_sparse(1,:))
     disp(rtstorage_T_sparse(2,:))
     disp('Runtime and Storage for Gauss-Seidel solver:')
-    disp(column_labels)
+    disp(column_labels_runtime)
     disp(rtstorage_T_gs(1,:))
     disp(rtstorage_T_gs(2,:))
     
@@ -158,6 +160,6 @@ else
     disp('row 3 contains the factor by which the error is reduced compared')
     disp('with the previous calculation')
 
-    disp(column_labels)
+    disp(column_labels_error)
     disp(error_res)   
 end
