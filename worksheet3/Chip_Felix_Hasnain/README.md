@@ -29,7 +29,7 @@
 *	What is internally happening with solving with mldivide opposed to linsolve? It is even faster!!! Why???
         The backslash operator (mldivide) checks for matrix properties in order to apply the correct procedure. linsolve assumes sth., if no opts are specified. That's why wrong results may occur when using linsolve and not knowing what properties the respective matrix has. In order to be able to compare full matrix and sparse matrix calculations, mldivide is used in both cases.
 *	So, why is Sparse so incredibly fast and for that, why not always just using sparse matrices intead of iterative scheme?
-	As can be obtained from the result table, sparse matrices soon need more storage as indices for non-zero elements have to be stored as well.
+	As can be obtained from the result table, sparse matrices soon need more storage as indices for non-zero elements have to be stored as well. On top, sparse solving is also just linear solving and as we want a unique solution, the matrix is not allowed to be singular. Otherwise, there will be either no or infinitely many solutions. On top, linear systems can be ill-conditioned, where small perturbations in the system matrix can lead to devastating results!
 *	Discuss the questions at the end of WS3.
 *	Determine runtime and storage order.
 *	What is the relation between R and e? e gets smaller with increasing Nx, but Rmin remains fixed (of course).
