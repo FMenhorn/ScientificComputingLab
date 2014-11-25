@@ -17,8 +17,8 @@ close all;
 f = @(x,y)(-2*pi^2*sin(pi*x).*sin(pi*y));
 f_ana = @(x,y)(sin(pi*x).*sin(pi*y));
 
-Nx = [15 31 63 100];
-Ny = [15 31 63 100];
+Nx = 4:2:100;
+Ny = Nx;
 
 % Time requirements for different grid sizes with full matrix
 Rtime_Full = zeros(1,length(Nx));
@@ -49,8 +49,9 @@ Strg_GS_Elements = zeros(1,length(Nx));
 
 figure('name','Direct Solution with Full Matrix');
 set(gcf, 'Position', get(0,'Screensize'));
-
+ct = 0;
 for n = 1:length(Nx)
+    ct = ct + 1
 	hx = 1/(Nx(n) + 1);
 	hy = 1/(Ny(n) + 1);
 	b = RHS(Nx(n),Ny(n),f);
@@ -74,24 +75,24 @@ for n = 1:length(Nx)
     Rtime_Full(n) = toc;
 
 
-% 	Coloured surface plot of Temperatue
-	subplot(2,4,n)
-	[Xmesh,Ymesh] = meshgrid(0:hx:1,0:hy:1);
-	surf(Xmesh,Ymesh,X);
-	axis([0 1 0 1 0 1]);
-	title(strcat('Surface plot: Nx = ', num2str(Nx(n)), ...
-		', Ny = ', num2str(Ny(n))));
-	xlabel('x-axis');
-	ylabel('y-axis');
-	zlabel('Temperature');
-	
-% 	Contour plot of Temperature
-	subplot(2,4,n+4)
-	contour(Xmesh,Ymesh,X)
-	xlabel('x-axis');
-	ylabel('y-axis');
-	title(strcat('Contour plot: Nx = ', num2str(Nx(n)), ...
-		', Ny = ', num2str(Ny(n))));
+% % 	Coloured surface plot of Temperatue
+% 	subplot(2,4,n)
+% 	[Xmesh,Ymesh] = meshgrid(0:hx:1,0:hy:1);
+% 	surf(Xmesh,Ymesh,X);
+% 	axis([0 1 0 1 0 1]);
+% 	title(strcat('Surface plot: Nx = ', num2str(Nx(n)), ...
+% 		', Ny = ', num2str(Ny(n))));
+% 	xlabel('x-axis');
+% 	ylabel('y-axis');
+% 	zlabel('Temperature');
+% 	
+% % 	Contour plot of Temperature
+% 	subplot(2,4,n+4)
+% 	contour(Xmesh,Ymesh,X)
+% 	xlabel('x-axis');
+% 	ylabel('y-axis');
+% 	title(strcat('Contour plot: Nx = ', num2str(Nx(n)), ...
+% 		', Ny = ', num2str(Ny(n))));
 	
 % 	Calculating the storage in terms of bytes and in terms of elements
 	s_A = whos('A'); s_X = whos('X'); s_b = whos('b');
@@ -108,6 +109,7 @@ figure('name','Direct Solution with Sparse Matrix');
 set(gcf, 'Position', get(0,'Screensize'));
 
 for n = 1:length(Nx)
+    ct = ct + 1
 	hx = 1/(Nx(n) + 1);
 	hy = 1/(Ny(n) + 1);
 	b = RHS(Nx(n),Ny(n),f);
@@ -129,24 +131,24 @@ for n = 1:length(Nx)
 	Strg_Sparse_Bytes(n) = s_A_sparse.bytes + s_X.bytes + s_b.bytes;
 	Strg_Sparse_Elements(n) = CountNZsInA(Nx(n),Ny(n)) + numel(X) + numel(b);
 	
-% 	Coloured surface plot of Temperatue
-	subplot(2,4,n)
-	[Xmesh,Ymesh] = meshgrid(0:hx:1,0:hy:1);
-	surf(Xmesh,Ymesh,X);
-	axis([0 1 0 1 0 1]);
-	title(strcat('Surface plot: Nx = ', num2str(Nx(n)), ...
-		', Ny = ', num2str(Ny(n))));
-	xlabel('x-axis');
-	ylabel('y-axis');
-	zlabel('Temperature');
-	
-% 	Contour plot of Temperature
-	subplot(2,4,n+4)
-	contour(Xmesh,Ymesh,X)
-	xlabel('x-axis');
-	ylabel('y-axis');
-	title(strcat('Contour plot: Nx = ', num2str(Nx(n)), ...
-		', Ny = ', num2str(Ny(n))));
+% % 	Coloured surface plot of Temperatue
+% 	subplot(2,4,n)
+% 	[Xmesh,Ymesh] = meshgrid(0:hx:1,0:hy:1);
+% 	surf(Xmesh,Ymesh,X);
+% 	axis([0 1 0 1 0 1]);
+% 	title(strcat('Surface plot: Nx = ', num2str(Nx(n)), ...
+% 		', Ny = ', num2str(Ny(n))));
+% 	xlabel('x-axis');
+% 	ylabel('y-axis');
+% 	zlabel('Temperature');
+% 	
+% % 	Contour plot of Temperature
+% 	subplot(2,4,n+4)
+% 	contour(Xmesh,Ymesh,X)
+% 	xlabel('x-axis');
+% 	ylabel('y-axis');
+% 	title(strcat('Contour plot: Nx = ', num2str(Nx(n)), ...
+% 		', Ny = ', num2str(Ny(n))));
 	
 end
 
@@ -157,6 +159,7 @@ figure('name','Iterative Solution with Gauss Seidel Method');
 set(gcf, 'Position', get(0,'Screensize'));
 
 for n = 1:length(Nx)
+    ct = ct + 1
 	hx = 1/(Nx(n) + 1);
 	hy = 1/(Ny(n) + 1);
 	
@@ -171,35 +174,35 @@ for n = 1:length(Nx)
 	Strg_GS_Bytes(n) = s_X.bytes + s_b.bytes;
 	Strg_GS_Elements(n) = numel(X) + numel(b);
 	
-% 	Coloured surface plot of Temperature
-	subplot(2,4,n)
-	[Xmesh,Ymesh] = meshgrid(0:hx:1,0:hy:1);
-	surf(Xmesh,Ymesh,X);
-	axis([0 1 0 1 0 1]);
-	title(strcat('Surface plot: Nx = ', num2str(Nx(n)), ...
-		', Ny = ', num2str(Ny(n))));
-	xlabel('x-axis');
-	ylabel('y-axis');
-	zlabel('Temperature');
-	
-% 	Contour plot of Temperature
-	subplot(2,4,n+4)
-	contour(Xmesh,Ymesh,X)
-	xlabel('x-axis');
-	ylabel('y-axis');
-	title(strcat('Contour plot: Nx = ', num2str(Nx(n)), ...
-		', Ny = ', num2str(Ny(n))));
+% % 	Coloured surface plot of Temperature
+% 	subplot(2,4,n)
+% 	[Xmesh,Ymesh] = meshgrid(0:hx:1,0:hy:1);
+% 	surf(Xmesh,Ymesh,X);
+% 	axis([0 1 0 1 0 1]);
+% 	title(strcat('Surface plot: Nx = ', num2str(Nx(n)), ...
+% 		', Ny = ', num2str(Ny(n))));
+% 	xlabel('x-axis');
+% 	ylabel('y-axis');
+% 	zlabel('Temperature');
+% 	
+% % 	Contour plot of Temperature
+% 	subplot(2,4,n+4)
+% 	contour(Xmesh,Ymesh,X)
+% 	xlabel('x-axis');
+% 	ylabel('y-axis');
+% 	title(strcat('Contour plot: Nx = ', num2str(Nx(n)), ...
+% 		', Ny = ', num2str(Ny(n))));
 end
 
-
+pause;
 %% Task f) and g) 
 
 % Runtime and storage requirements already calculated in the previous
 % section
 
 % Calculating error in Gauss Seidel
-Nx = [7 15 31 63 127];
-Ny = Nx;
+%Nx = [7 15 31 63 127];
+%Ny = Nx;
 len = length(Nx);
 e = zeros(1,len);
 GSerr = zeros(1,len);
