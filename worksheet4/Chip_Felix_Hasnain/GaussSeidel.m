@@ -1,12 +1,18 @@
-function [ Tout ] = ImEuler2D( Tin,dt )
-%UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
+function [ Xbnd ] = GaussSeidel( Nx, Ny, B )
+%GAUSSSEIDEL This function implements the Gauss Seidel Method for solving
+%PDE
+%   This function implements the Gauss-Seidel method as a function of the
+%   number of unknowns in the x-direction (respectively y-direction) Nx
+%   (respectively Ny) as well as the precomputed right-hand side B (see
+%   RHS.m). It returns a matrix of computed values (unknowns and boundary
+%   values) after repeteatedly iterating through the entire system until a
+%   predefined accuracy limit has been reached.
 
-LIM = 1e-6;   %max precision value
+LIM = 1e-4;   %max precision value
 IMAX = 20000; %max iterations limit value
 R = LIM + 1;
-[Nx, Ny] = size(Tin(2:end-1,2:end-1));
-Tout = zeros(Nx+2, Ny+2);
+
+Xbnd = zeros(Nx+2, Ny+2);
 
 % defining various coefs for center difference method
 % for T mxn, N = m*n 
@@ -18,9 +24,9 @@ N = (Nx)*(Ny);
 
 % By expressing 1/hx^2 and 1/hy^2 in terms of the number of unknowns Nx and
 % Ny and substitung them by a and c, we obtain:
-a = -dt*(Nx+1)^2;       
-b = -dt*(Ny+1)^2;
-c = 2*dt*((Nx+1)^2+(Ny+1)^2)+1;
+a = (Nx+1)^2;       
+c = (Ny+1)^2;
+b = -2*(a + c);
 
 Rmat = zeros(Nx,Ny); % Bracket term of the residual calculation (see Worksheet)
 
@@ -33,13 +39,13 @@ while R > LIM && n < IMAX
 		for i=2:Nx+1
             % (Re-)Calculating the current unknown in the grid by
             % reordering the above equation
-			Tout(i,j) = Tin(i,j)/c - (a/c)*(Tout(i+1,j)+Tout(i-1,j)) - (b/c)*(Tout(i,j-1)+Tout(i,j+1));
+			Xbnd(i,j) = ((B(i-1,j-1) - a*Xbnd(i-1,j) - a*Xbnd(i + 1,j)- c*Xbnd(i,j -1) - c*Xbnd(i,j +1))/b);
         end
     end
     for j=2:Ny+1
 		for i=2:Nx+1
             % (Re-)Calculating the residual at every point in the grid.
-    		Rmat(i,j) = Tin(i,j) - a*(Tout(i-1,j)+Tout(i+1,j)) - b*(Tout(i,j-1)+Tout(i,j+1)) - c*(Tout(i,j));
+    		Rmat(i,j) = B(i-1,j-1) - b*Xbnd(i,j) -a*Xbnd(i-1,j) - a*Xbnd(i+1,j)- c*Xbnd(i,j-1) - c*Xbnd(i,j+1);
         end
     end
 
@@ -60,3 +66,4 @@ end
 % hold off;
 
 end
+
