@@ -3,7 +3,12 @@ function [ ] = plotter(handle,format,cur_N_xy,T_res,t,cur_dt,length_dt,subplot_c
 %   Detailed explanation goes here
 
     surf_handle = plot_results(handle,cur_N_xy,cur_N_xy,T_res);
-    left = mod(subplot_counter,length_dt);
+    
+    if (length_dt == 1)
+        left = 1;
+    else
+        left = mod(subplot_counter,length_dt);
+    end
     top = subplot_counter <= length_dt; 
     plot_labeler(handle,cur_dt,cur_N_xy,cur_N_xy,left,top)
     
