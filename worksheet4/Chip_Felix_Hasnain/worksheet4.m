@@ -1,5 +1,5 @@
 clear all
-%close all
+close all
 
 Nx = [3 7 15 31];
 Ny = [3 7 15 31];
@@ -16,7 +16,7 @@ for k = 1:length(tmax)  % iterates over tmax
 			
 			for n = 1:length(dt)  % iterates over dt
 				
-				titrmax = tmax / dt(n);
+				titrmax = tmax(k) / dt(n);
 				hx = 1/(Nx(m) + 1);
 				hy = 1/(Ny(m) + 1);
 
@@ -53,7 +53,7 @@ end % k loop
 %% Implicit Euler
 
 clear all
-close all
+%close all
 
 Nx = [3 7 15 31];
 Ny = [3 7 15 31];
@@ -68,7 +68,7 @@ for m = 1:length(Nx) % iterates over Nx
 					
 		for k = 1:length(tmax)  % iterates over tmax	
 				
-				titrmax = tmax / dt;
+				titrmax = tmax(k) / dt;
 				hx = 1/(Nx(m) + 1);
 				hy = 1/(Ny(m) + 1);
 
