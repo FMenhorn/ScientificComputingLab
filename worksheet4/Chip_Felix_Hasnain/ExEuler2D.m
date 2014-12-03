@@ -1,6 +1,9 @@
 function [ X ] = ExEuler2D( X , dt )
-%UNTITLED8 Summary of this function goes here
-%   Detailed explanation goes here
+% ExEuler2D Computes the 2D explicit Euler function (FTCS - Forward in time,
+% centered in space)
+%   This function takes the grid of the previous time step and uses these
+%   values to compute the values at the current time step using an FTCS
+%   scheme.
 
 [m, n] = size(X);
 Nx = m - 2;
