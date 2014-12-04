@@ -19,7 +19,7 @@ clear all;
 %   e) Plot the solutions for dt=1/64 and different t_end.
 
 
-%%a)
+%% a)
 
 % We assume convergence, thus the solution converges to zero:
 %                   lim(t->inf) T(x,y,t) = 0
@@ -63,7 +63,7 @@ for cur_N_xy = N_xy
             T_res = expl_euler(T_res,t_start,t_end(t_end_index),cur_dt,cur_N_xy,cur_N_xy);
 
             handle = subplot(length(N_xy),length(dt),subplot_counter);
-            plotter(handle,cur_N_xy,T_res,t_end(t_end_index),['dt = 2^{' num2str(log2(cur_dt)) '}' ],length(dt),subplot_counter);
+            plotter(handle,cur_N_xy,T_res,['dt = 2^{' num2str(log2(cur_dt)) '}' ],length(dt),subplot_counter);
 
             t_start = t_end(t_end_index);
         end
@@ -110,7 +110,7 @@ for cur_N_xy = N_xy
             T_res = impl_euler(T_res,t_start,t_end(t_end_index),cur_dt,cur_N_xy,cur_N_xy,accuracy_limit);
             
             handle = subplot(length(N_xy),length(t_end),subplot_counter);
-            plotter(handle,cur_N_xy,T_res,t_end(t_end_index),['t = ' num2str(t_end(t_end_index))],length(t_end),subplot_counter);
+            plotter(handle,cur_N_xy,T_res,['t = ' num2str(t_end(t_end_index))],length(t_end),subplot_counter);
             
             t_start = t_end(t_end_index);
             subplot_counter = subplot_counter +1;
