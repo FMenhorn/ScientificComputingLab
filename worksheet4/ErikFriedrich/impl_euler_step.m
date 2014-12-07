@@ -42,7 +42,6 @@ while ( res > accuracy_limit)
         %         top_values = T_approx(i+1,:);
         %         bottom_values = T_approx(i-1,:);
         %         right_values = [T_approx(i,2:(N_x+2)) 0];
-        %         true_values = b((1:N_x)+(i-2)*N_x);
         %         
         %         T_tmp = (T_old(i,:) + dt*((bottom_values + top_values)*hy_min2 + right_values*hx_min2));
         T_tmp = (T_old(i,:) + (T_next(i+1,:) + T_next(i-1,:))*hy_min2*dt + [T_next(i,2:(N_x+2)) 0]*hx_min2*dt);
@@ -67,6 +66,8 @@ while ( res > accuracy_limit)
         - dt*((T_next(2:end-1,1:end-2) + T_next(2:end-1,3:end  ))*hx_min2 ...
         + (T_next(3:end  ,2:end-1) + T_next(1:end-2,2:end-1)) * hy_min2));
 
+    %calculate residual using in-built 2-norm function, interpreting matrix
+    %as a vector
     res= sqrt(1/(N_x*N_y))*norm(residual_matrix(:));
 end
 

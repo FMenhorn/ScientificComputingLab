@@ -11,6 +11,7 @@ function [ ] = plot_labeler( fig_handle,top_string,N_x,N_y,left,top )
 %           top:        boolean to check if figure is in the top row of the
 %                       subplotfigure
 
+    % implement appropriate labels
 if top==1
     title(fig_handle,top_string);
 end

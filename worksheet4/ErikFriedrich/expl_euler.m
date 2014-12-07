@@ -4,7 +4,7 @@ function [ T_end ] = expl_euler( T_start,t_start,t_end,dt,N_x,N_y )
 %       T_start:    initial value of the grid points
 %       t_start:    start time
 %       t_end:      end time
-%       dt:         time step size delta t
+%       dt:         time step size delta t, assumed to divide time interval
 %       N_x:        number of inner grid points in x
 %       N_y:        number of inner grid points in y
 % OUTPUT:

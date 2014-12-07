@@ -13,29 +13,31 @@ clear all;
 % The exercises are the following:
 %   a) Determine lim(t->inf) T(x,y,t)
 %   b) Implement an explicit Euler step for time discretization
-%   c) Plot the solution for different t_end, N_x/N_y and dt
+%   c) Plot the solution for varying t_end, N_x/N_y and dt
 %   d) Implement an implicit Euler, solve the linear system of equations
 %   with an adapted Gauss-Seidel solver from worksheet 3
-%   e) Plot the solutions for dt=1/64 and different t_end.
+%   e) Plot the solutions for dt=1/64 and varying t_end.
 
 
 %% a)
 
-% We assume convergence, thus the solution converges to zero:
+% We assume convergence, thus the solution converges to zero proven for
+% example by separation of variables to find a solution, which under the
+% given circumstances can be shown to be unique.:
 %                   lim(t->inf) T(x,y,t) = 0
 
 %%
 
 %% b) and c)
 
-% Given starting parameters
+% Starting parameters as given in worksheet
 t_end = [1/8 2/8 3/8 4/8];
 dt = [1/64 1/128 1/256 1/512 1/1024 1/2048 1/4096];
 N_xy = [3 7 15 31];
-fig_array = [];
 
 % Initialize the figures used for the subplots and initialize
 % subplot_counter which gives the position of the current subplot
+fig_array = [];
 for t_end_index = 1:length(t_end)
     fig_array = [fig_array figure('name',['Explicit Euler with t_end ' num2str(t_end(t_end_index))],...
         'renderer','painters',...
@@ -76,7 +78,7 @@ fig_labeler(fig_array, t_end);
 
 %% d) and e)
 
-% Given starting parameters
+% Starting parameters as given in worksheet
 t_end = [1/8 2/8 3/8 4/8];
 dt = [1/64];
 N_xy = [3 7 15 31];
