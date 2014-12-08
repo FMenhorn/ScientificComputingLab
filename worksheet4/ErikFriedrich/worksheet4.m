@@ -54,9 +54,10 @@ end
 
 % Starting parameters as given in worksheet
 t_end = [1/8 2/8 3/8 4/8];
-dt = [1/64 1/128 1/256 1/512];
+dt = [1/64 1/128 1/256 1/512 1/1024 1/2048 1/4096];
 N_xy = [3 7 15 31];
 error_val = nan(4,length(dt),length(N_xy));
+rel_error_val = nan(4,length(dt),length(N_xy));
 
 % Initialize the figures used for the subplots and initialize
 % subplot_counter which gives the position of the current subplot
@@ -101,12 +102,14 @@ for cur_N_xy = N_xy
             
             size(T_res(2:end-1,2:end-1))
             size(T_correct(t_end_index,2:h_ratio:(end-h_ratio-1),2:h_ratio:(end-h_ratio-1)))
-            T_tmp = nan(cur_N_xy,cur_N_xy);
-            T_tmp(:,:) = T_correct(t_end_index,2:h_ratio:(end-h_ratio-1),2:h_ratio:(end-h_ratio-1));
+            T_tmp = nan(cur_N_xy+2,cur_N_xy+2);
+            T_tmp(:,:) = T_correct(t_end_index,1:h_ratio:end,1:h_ratio:end);
             size(T_tmp)
-            error_matrix = T_res(2:end-1,2:end-1) - T_tmp(:,:);
+            error_matrix = T_res(:,:) - T_tmp(:,:);
+            rel_error_matrix = error_matrix(2:end-1,2:end-1)./T_tmp(2:end-1,2:end-1);
             
-            error_val(t_end_index,i_dt,i_N) = norm(error_matrix(:));
+            error_val(t_end_index,i_dt,i_N) = 1/cur_N_xy*norm(error_matrix(:));
+            rel_error_val(t_end_index,i_dt,i_N) = 1/cur_N_xy*norm(rel_error_matrix(:));
         end
         subplot_counter = subplot_counter +1;
         i_dt = 1 + i_dt;
@@ -117,10 +120,18 @@ column_label =[];
 for i = 1:16
     column_label = [column_label '(' num2str(i) ',' num2str(i) ') '];
 end
-tmp = nan(4,4);
+tmp = nan(length(dt),length(N_xy));
 for i = 1:4
-tmp(:,:) = error_val(i,:,:);
-printmat(tmp,'error',column_label,column_label);
+tmp(:,:) = error_val(i,:,:).*(error_val(i,:,:)<1.0);
+tmp
+
+%printmat(tmp,'error',column_label,column_label);
+end
+for i = 1:4
+rel_tmp(:,:) = rel_error_val(i,:,:).*(rel_error_val(i,:,:)<1.0);
+rel_tmp
+
+%printmat(tmp,'error',column_label,column_label);
 end
 return
 %fig_labeler(fig_array, t_end);
