@@ -10,6 +10,7 @@ Tout = zeros(Nx+2, Ny+2);	% initializing the output matrix
 hx = 1 / (Nx + 1);
 hy = 1 / (Ny + 1);
 
+<<<<<<< Updated upstream
 % The equation implemented for Explicit Euler looks like:
 %	Tout(i,j) = T(i,j) + dt*Tt
 % Where
@@ -31,6 +32,12 @@ c = 1 - 2*dt*(1/(hx^2) + 1/(hy^2));
 Tout(2:end-1 , 2:end-1) = a * (T(1:end-2,2:end-1) + T(3:end,2:end-1))...
 						+ b * (T(2:end-1,1:end-2) + T(2:end-1,3:end))...
 						+ c * T(2:end-1 , 2:end-1);
+=======
+
+X(2:end-1 , 2:end-1) = X(2:end-1 , 2:end-1) + dt * ...
+	(1 / (hx^2) * ( X(1:end-2 , 2:end-1) - 2*X(2:end-1,2:end-1) + X(3:end,2:end-1)) ...
+	+ 1/(hy^2)*( X(2:end-1,1:end-2) - 2*X(2:end-1,2:end-1) + X(2:end-1,3:end)));
+>>>>>>> Stashed changes
 
 end
 
