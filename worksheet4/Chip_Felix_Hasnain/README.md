@@ -14,9 +14,6 @@
 *	Set spacing on the left side of plots to accomodate zlabels
 *	Organize the code in sections
 *	In the ExEuler2D function, reduce the number of terms by simplifying the expression.
-*	insert a) into worksheet4 file
-*	correct input perameters for b) so they match the question
-*	Update figures
 
 ## Theory Discussion
 ### Theory links:

@@ -1,21 +1,13 @@
 clear all
 close all
 
-Nx = [3 7 15 31]; %varying number X and Y segments in field 
+Nx = [3 7 15 31];
 Ny = [3 7 15 31];
 dt = [1/64 1/128 1/256 1/512 1/1024 1/2048 1/4096];
-<<<<<<< Updated upstream
 tmax = [1/8 2/8 3/8 4/8];
 
 plot_dt = [64 128 256 512 2048 1024 4096];  % Just for plotting
 plot_tmax = [1 2 3 4];						% Just for plotting
-=======
-%number of timesteps needed to plot to max value
-plot_dt = [64 128 256 512 2048 1024 4096]; 
-tmax = [1/8 2/8 3/8 4/8];
-%number of timesteps needed to plot to max value
-plot_tmax = [1 2 3 4];
->>>>>>> Stashed changes
 %% Explicit Euler
 % The following 4 nested for-loops iterate over
 %   1) four different values of tmax, such that ONE figure represents a
