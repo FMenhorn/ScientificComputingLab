@@ -10,21 +10,21 @@ Tout = zeros(Nx+2, Ny+2);	% initializing the output matrix
 hx = 1 / (Nx + 1);
 hy = 1 / (Ny + 1);
 
-% The equation Implemented for Implicit Euler looks like:
-%	Tout(i,j) = T(i,j) + Tt*T(i,j)
+% The equation implemented for Explicit Euler looks like:
+%	Tout(i,j) = T(i,j) + dt*Tt
 % Where
 %	Tt = Txx + Tyy
 % Further:
 %	Txx = (1 / (hx^2) * ( T(i-1,j) - 2*T(i,j) + T(i+1,j)) and
-%	Tyy = (1 / (hx^2) * ( T(i,j-1) - 2*T(i,j) + T(i,j+1))
+%	Tyy = (1 / (hy^2) * ( T(i,j-1) - 2*T(i,j) + T(i,j+1))
 
 % By simplifying the above equations for finding the coefficients, the final
 % equation looks like
 % Tout = a*T(i-1,j) + b*T(i,j-1) + a*T(i+1,j) + b*T(i,j+1) + c*T(i,j) where
 
-a = dt*1 / (hx^2);
-b = dt*1 / (hy^2);
-c = 1 - 2*dt*(1 / (hx^2)+1 / (hy^2));
+a = dt/(hx^2);
+b = dt/(hy^2);
+c = 1 - 2*dt*(1/(hx^2) + 1/(hy^2));
 
 % Solving for the whole matrix in one equation
 
