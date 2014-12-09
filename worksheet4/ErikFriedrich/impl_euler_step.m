@@ -25,9 +25,8 @@ hx_min2= (N_x+1)^2;
 hy_min2= (N_y+1)^2;
 doubleneg_h_sum = -2*hx_min2-2*hy_min2;
 
-%using initial guess 0 for all entries in the solution matrix, and setting
-%the boundary values (the outer values of the matrix) to 0. 
-T_next = zeros(N_y+2,N_x+2);
+%using initial guess = old values.
+T_next = T_old;
 %accuracy_limit = 10^(-4);
 res = accuracy_limit+1;
 
